@@ -1,0 +1,2361 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f6f2">
+  <title>Mr. Dahl Vocab — Vocabulary Practice</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f7f6f2;
+      --card: #fffefa;
+      --ink: #252722;
+      --muted: #72776d;
+      --line: #e6e5dc;
+      --green: #2f6d53;
+      --green-dark: #24543f;
+      --green-soft: #eaf3ed;
+      --coral: #dc765f;
+      --yellow: #f3d783;
+      --red: #aa493d;
+      --shadow: 0 12px 38px rgba(40, 54, 43, .07);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 10% 0%, rgba(243, 215, 131, .19), transparent 30rem),
+        radial-gradient(ellipse at 98% 22%, rgba(159, 193, 163, .16), transparent 27rem),
+        var(--paper);
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 3px solid rgba(47, 109, 83, .27);
+      outline-offset: 2px;
+    }
+    .shell { width: min(1120px, calc(100% - 36px)); margin: 0 auto; padding: 25px 0 60px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 35px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 15px; background: var(--green); color: white; font-size: 22px; }
+    .brand-name { font-family: Georgia, "Times New Roman", serif; font-size: 19px; font-weight: 700; letter-spacing: -.25px; }
+    .brand-note { margin-top: 2px; color: var(--muted); font-size: 12px; }
+    .top-actions { display: flex; align-items: center; gap: 9px; }
+    .select-wrap { position: relative; }
+    .top-select, .icon-button, .outline-button {
+      border: 1px solid var(--line); border-radius: 11px; background: rgba(255, 254, 250, .85); color: var(--ink);
+    }
+    .top-select { padding: 9px 30px 9px 11px; max-width: 180px; }
+    .music-select { max-width: 190px; }
+    .music-volume { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; white-space: nowrap; }
+    .music-volume input { width: 92px; accent-color: var(--green); }
+    .music-volume output { min-width: 34px; color: var(--ink); font-variant-numeric: tabular-nums; }
+    .icon-button { display: grid; place-items: center; width: 40px; height: 40px; font-size: 17px; }
+    .icon-button:hover, .outline-button:hover { border-color: #a8b9aa; background: white; }
+    .welcome { display: grid; grid-template-columns: 1.3fr .7fr; gap: 28px; align-items: center; margin-bottom: 25px; }
+    .eyebrow { color: var(--green); font-size: 11px; font-weight: 800; letter-spacing: 1.7px; text-transform: uppercase; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 620px; margin: 8px 0 10px; font: 500 clamp(36px, 5vw, 56px)/1.04 Georgia, "Times New Roman", serif; letter-spacing: -1.6px; }
+    .intro { max-width: 550px; margin-bottom: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .daily-card { position: relative; overflow: hidden; padding: 21px; border: 1px solid #e8e3d4; border-radius: 20px; background: #fff8e9; }
+    .daily-card::after { position: absolute; right: 11px; bottom: -37px; content: "✿"; color: rgba(220, 118, 95, .24); font-size: 114px; line-height: 1; transform: rotate(-15deg); }
+    .daily-card .small { color: #8a7960; font-size: 12px; }
+    .daily-word { margin: 7px 0 4px; font: 600 27px Georgia, "Times New Roman", serif; }
+    .daily-def { max-width: 300px; margin: 0; color: #695e4e; font-size: 13px; line-height: 1.5; }
+    .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 26px 0 21px; }
+    .stat { display: flex; align-items: center; gap: 12px; padding: 15px 17px; border: 1px solid var(--line); border-radius: 15px; background: rgba(255, 254, 250, .8); }
+    .stat-icon { display: grid; place-items: center; width: 37px; height: 37px; border-radius: 12px; background: var(--green-soft); font-size: 17px; }
+    .stat-num { font-size: 20px; font-weight: 750; line-height: 1; }
+    .stat-label { margin-top: 5px; color: var(--muted); font-size: 11px; }
+    .tabs { display: flex; gap: 5px; overflow-x: auto; padding: 5px; border: 1px solid var(--line); border-radius: 14px; background: rgba(239, 238, 231, .7); scrollbar-width: none; }
+    .tab { flex: 1 0 auto; padding: 11px 14px; border: 0; border-radius: 10px; background: transparent; color: var(--muted); font-size: 13px; font-weight: 650; transition: .18s; }
+    .tab:hover { color: var(--ink); }
+    .tab.active { background: var(--card); color: var(--green-dark); box-shadow: 0 2px 7px rgba(30, 45, 33, .08); }
+    main { min-height: 440px; padding-top: 20px; }
+    .panel { animation: appear .25s ease both; }
+    @keyframes appear { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+    .panel-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; margin-bottom: 17px; }
+    .panel-heading h2 { margin: 0 0 5px; font: 600 27px Georgia, "Times New Roman", serif; letter-spacing: -.4px; }
+    .panel-heading p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .primary, .secondary, .soft-button, .danger-button {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 42px; padding: 10px 15px; border: 1px solid transparent; border-radius: 11px;
+      font-size: 13px; font-weight: 700; transition: .16s;
+    }
+    .primary { background: var(--green); color: white; }
+    .primary:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .secondary { border-color: var(--line); background: var(--card); color: var(--ink); }
+    .secondary:hover { border-color: #b8c9bb; }
+    .soft-button { min-height: 35px; padding: 7px 11px; border-color: #dce8de; background: var(--green-soft); color: var(--green-dark); font-size: 12px; }
+    .soft-button:hover { background: #dcece0; }
+    .danger-button { min-height: 35px; padding: 7px 11px; border-color: #efd6d1; background: #fff6f3; color: var(--red); font-size: 12px; }
+    .card { border: 1px solid var(--line); border-radius: 19px; background: var(--card); box-shadow: var(--shadow); }
+    .quiz-card { max-width: 760px; margin: 0 auto; padding: clamp(20px, 5vw, 38px); }
+    .quiz-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 12px; }
+    .progress { height: 5px; margin: 11px 0 27px; overflow: hidden; border-radius: 9px; background: #eeeee8; }
+    .progress > span { display: block; height: 100%; border-radius: inherit; background: var(--green); transition: width .3s; }
+    .question-kicker { color: var(--green); font-size: 11px; font-weight: 800; letter-spacing: 1.15px; text-transform: uppercase; }
+    .question-title { margin: 7px 0 7px; font: 500 clamp(23px, 4vw, 32px)/1.2 Georgia, "Times New Roman", serif; }
+    .question-hint { min-height: 22px; margin: 0 0 19px; color: var(--muted); font-size: 13px; }
+    .listen-line { display: flex; align-items: center; justify-content: space-between; gap: 13px; margin-bottom: 20px; padding: 13px 15px; border-radius: 12px; background: #f2f6f1; }
+    .listen-line small { display: block; color: var(--muted); font-size: 11px; }
+    .listen-word { display: block; margin-top: 3px; font-size: 18px; font-weight: 730; letter-spacing: .3px; }
+    .choices { display: grid; gap: 9px; }
+    .spelling-form { display: flex; gap: 9px; }
+    .spelling-input { min-width: 0; margin: 0; padding: 13px 14px; font-size: 16px; letter-spacing: .4px; }
+    .spelling-input:disabled { color: var(--muted); background: #f7f7f3; }
+    .choice { width: 100%; padding: 14px 15px; border: 1px solid var(--line); border-radius: 12px; background: white; color: var(--ink); text-align: left; font-size: 14px; line-height: 1.5; transition: .14s; }
+    .choice:hover:not(:disabled) { border-color: #a7c2ad; background: #fbfdfa; }
+    .choice.selected { border-color: var(--green); background: var(--green-soft); box-shadow: 0 0 0 1px var(--green); }
+    .choice.correct { border-color: #9ab99c; background: #edf7ee; }
+    .choice.incorrect { border-color: #dbaba2; background: #fff1ee; }
+    .choice:disabled { cursor: default; }
+    .answer-note { min-height: 27px; padding-top: 12px; font-size: 13px; font-weight: 650; }
+    .answer-note.ok { color: var(--green); }
+    .answer-note.no { color: var(--red); }
+    .quiz-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 15px; }
+    .result { padding: 35px 22px; text-align: center; }
+    .result-emoji { font-size: 38px; }
+    .result h3 { margin: 8px 0; font: 600 29px Georgia, "Times New Roman", serif; }
+    .score-circle {
+      position: relative; display: grid; place-items: center; width: 158px; height: 158px;
+      margin: 18px auto; border-radius: 50%;
+      background: conic-gradient(var(--score-color) 0 var(--score-fill), #ebece6 var(--score-fill) 100%);
+      transition: background .35s ease;
+    }
+    .score-circle::before { position: absolute; inset: 9px; border-radius: inherit; background: var(--card); content: ""; }
+    .score-circle-inner { position: relative; z-index: 1; display: grid; gap: 1px; justify-items: center; }
+    .score-percent { color: var(--score-color); font-size: 38px; font-weight: 850; letter-spacing: -1.8px; line-height: 1.05; }
+    .score-label { color: var(--muted); font-size: 11px; font-weight: 650; }
+    .result-score { margin: 5px 0 10px; color: var(--muted); font-size: 15px; font-weight: 700; }
+    .result p { margin-bottom: 21px; color: var(--muted); font-size: 14px; }
+    .empty { padding: 42px 20px; border: 1px dashed #d8d8ce; border-radius: 16px; color: var(--muted); text-align: center; }
+    .empty .empty-icon { margin-bottom: 8px; font-size: 28px; }
+    .wrong-list, .word-list { display: grid; gap: 10px; }
+    .wrong-item, .word-item { display: grid; grid-template-columns: minmax(145px, .58fr) minmax(0, 1.42fr) auto; align-items: center; gap: 16px; padding: 15px 17px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+    .wrong-word, .word-name { font-size: 17px; font-weight: 750; }
+    .wrong-word small, .word-name small { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; font-weight: 500; }
+    .wrong-def, .word-def { color: #565b53; font-size: 13px; line-height: 1.55; }
+    .wrong-answer { display: block; margin-top: 4px; color: var(--red); font-size: 12px; }
+    .word-def .cn { margin-top: 2px; color: var(--muted); }
+    .item-actions { display: flex; align-items: center; gap: 7px; }
+    .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 13px; }
+    .filter-chip { padding: 8px 12px; border: 1px solid var(--line); border-radius: 20px; background: var(--card); color: var(--muted); font-size: 12px; font-weight: 650; }
+    .filter-chip.active { border-color: #c3d5c6; background: var(--green-soft); color: var(--green-dark); }
+    .search { flex: 1; min-width: 170px; margin-left: auto; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; background: white; color: var(--ink); }
+    .challenge-card, .speak-card { max-width: 760px; margin: 0 auto; padding: clamp(22px, 5vw, 39px); }
+    .challenge-word { margin: 15px 0 7px; font: 600 clamp(32px, 6vw, 44px) Georgia, "Times New Roman", serif; letter-spacing: -1px; }
+    .part-of-speech { display: inline-block; padding: 4px 8px; border-radius: 7px; background: #f4f1e9; color: #7c725d; font-size: 11px; font-weight: 700; }
+    .challenge-prompt { margin: 21px 0 12px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    textarea { display: block; width: 100%; min-height: 117px; resize: vertical; padding: 13px 14px; border: 1px solid var(--line); border-radius: 12px; background: #fff; color: var(--ink); font: 14px/1.6 inherit; }
+    textarea:focus { border-color: #9ebba5; outline: 3px solid rgba(47, 109, 83, .12); }
+    .challenge-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 13px; }
+    .feedback { margin-top: 15px; padding: 13px 15px; border-radius: 11px; background: #f4f7f1; color: #4f5c4f; font-size: 13px; line-height: 1.6; }
+    .feedback strong { color: var(--green-dark); }
+    .speak-card { text-align: center; }
+    .speak-orb { display: grid; place-items: center; width: 95px; height: 95px; margin: 27px auto 15px; border: 1px solid #dce8dd; border-radius: 50%; background: var(--green-soft); font-size: 35px; }
+    .speak-orb.recording { animation: pulse 1.2s infinite; background: #ffede8; border-color: #e9b3a6; }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 13px rgba(220, 118, 95, .11); } }
+    .speak-target { min-height: 29px; margin: 9px 0 6px; font-size: 18px; font-weight: 750; }
+    .speak-help { min-height: 40px; margin: 0 auto 18px; max-width: 480px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .score-meter { width: min(360px, 100%); height: 9px; margin: 16px auto 7px; overflow: hidden; border-radius: 8px; background: #ecece5; }
+    .score-meter span { display: block; height: 100%; background: var(--green); transition: width .4s; }
+    .voice-score { font-size: 23px; font-weight: 800; color: var(--green-dark); }
+    .settings-row { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 10px 0 18px; }
+    .settings-row label { color: var(--muted); font-size: 12px; font-weight: 650; }
+    .settings-row select { max-width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 9px; background: white; color: var(--ink); }
+    .guide-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
+    .guide-card { padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+    .guide-card h3 { margin-bottom: 7px; font-size: 15px; }
+    .guide-card p, .guide-card li { color: var(--muted); font-size: 13px; line-height: 1.65; }
+    .guide-card p { margin-bottom: 0; }
+    .guide-card ol { margin: 0; padding-left: 20px; }
+    .source-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin: 21px 0 10px; }
+    .source-heading h3 { margin: 0; font: 600 21px Georgia, "Times New Roman", serif; }
+    .source-code { display: block; width: 100%; min-height: 220px; padding: 14px; resize: vertical; border: 1px solid var(--line); border-radius: 13px; background: #222722; color: #e3efdf; font: 12px/1.55 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .license-box { margin-top: 15px; padding: 17px; border: 1px solid var(--line); border-radius: 13px; background: var(--card); }
+    .license-box h3 { margin-bottom: 8px; font-size: 14px; }
+    .license-box p { margin-bottom: 12px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .license-box pre { max-height: 220px; margin: 0; overflow: auto; color: var(--muted); font: 11px/1.55 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap; }
+    .maze-card { padding: clamp(15px, 3vw, 23px); }
+    .maze-hud { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 9px; margin-bottom: 13px; }
+    .maze-hud-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .maze-badge { padding: 8px 11px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: #465047; font-size: 12px; font-weight: 750; }
+    .maze-stage { overflow: auto; padding: 10px; border: 1px solid #dfe4d9; border-radius: 14px; background: #edf1e9; text-align: center; }
+    .maze-canvas { display: block; max-width: 100%; height: auto !important; margin: auto; border-radius: 8px; background: #fbfaf5; image-rendering: pixelated; }
+    .maze-help { margin: 12px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .maze-controls { display: grid; grid-template-columns: repeat(3, 48px); grid-template-rows: repeat(2, 43px); justify-content: center; gap: 6px; margin: 12px auto 0; }
+    .maze-controls button { border: 1px solid #d4dfd2; border-radius: 10px; background: white; color: var(--green-dark); font-size: 18px; font-weight: 800; touch-action: manipulation; }
+    .maze-controls button:hover { background: var(--green-soft); }
+    .maze-up { grid-column: 2; grid-row: 1; }
+    .maze-left { grid-column: 1; grid-row: 2; }
+    .maze-down { grid-column: 2; grid-row: 2; }
+    .maze-right { grid-column: 3; grid-row: 2; }
+    .maze-overlay { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 18px; overflow: auto; background: rgba(28, 36, 29, .58); }
+    .maze-dialog { width: min(500px, 100%); max-height: min(85vh, 800px); overflow: auto; padding: clamp(20px, 5vw, 30px); border: 1px solid var(--line); border-radius: 20px; background: var(--card); box-shadow: 0 22px 60px rgba(0,0,0,.2); }
+    .maze-dialog h3 { margin: 8px 0; font: 600 25px Georgia, "Times New Roman", serif; }
+    .maze-dialog p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .maze-word { margin: 13px 0; color: var(--green-dark); font: 700 clamp(23px, 6vw, 33px) Georgia, "Times New Roman", serif; overflow-wrap: anywhere; }
+    .maze-options { display: grid; gap: 8px; margin-top: 14px; }
+    .maze-feedback { min-height: 20px; margin: 12px 0; color: var(--green-dark); font-size: 13px; font-weight: 700; line-height: 1.5; }
+    .maze-feedback.wrong { color: var(--red); }
+    .maze-start { max-width: 760px; margin: 0 auto; padding: clamp(22px, 5vw, 35px); }
+    .editor-card { max-width: 760px; margin: 0 auto; padding: clamp(20px, 5vw, 34px); }
+    .editor-fields { display: grid; gap: 15px; margin: 20px 0; }
+    .editor-fields label { display: grid; gap: 7px; color: var(--ink); font-size: 13px; font-weight: 700; }
+    .editor-fields textarea { min-height: 105px; resize: vertical; line-height: 1.55; }
+    .editor-actions { display: flex; flex-wrap: wrap; gap: 9px; }
+    .editor-note, .notebook-notice { margin: 12px 0; padding: 12px 14px; border: 1px solid #eadfbf; border-radius: 11px; background: #fff8e9; color: #65583f; font-size: 12px; line-height: 1.55; }
+    .notebook-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0 10px; }
+    .notebook-tabs .active { border-color: var(--green); background: var(--green); color: white; }
+    .notebook-card { display: grid; gap: 14px; padding: clamp(16px, 3vw, 28px); }
+    .notebook-toolbar { display: grid; grid-template-columns: auto minmax(130px, .8fr) minmax(250px, 1.5fr); align-items: end; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: #f8f8f3; }
+    .notebook-tool-group { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; min-height: 38px; }
+    .notebook-control { display: grid; min-width: 0; gap: 5px; color: var(--muted); font-size: 11px; font-weight: 700; }
+    .notebook-toolbar select, .notebook-toolbar input { min-width: 0; min-height: 38px; border: 1px solid var(--line); border-radius: 9px; background: white; color: var(--ink); }
+    .notebook-toolbar select { width: 100%; padding: 7px 9px; }
+    .notebook-toolbar input[type="color"] { width: 46px; padding: 3px; }
+    .notebook-toolbar input[type="range"] { width: min(180px, 100%); accent-color: var(--green); }
+    .notebook-color-tools { display: grid; grid-template-columns: minmax(95px, 1fr) minmax(95px, 1fr) auto; align-items: end; }
+    .notebook-editor { min-height: 340px; padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: white; line-height: 1.7; overflow-wrap: anywhere; }
+    .notebook-editor:focus { outline: 3px solid rgba(47,109,83,.17); outline-offset: 1px; }
+    .notebook-editor:empty::before { color: #a1a49b; content: attr(data-placeholder); pointer-events: none; }
+    .notebook-drawing { display: grid; gap: 10px; }
+    .notebook-drawing-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+    .notebook-drawing-head strong { color: var(--green-dark); font-size: 14px; }
+    .notebook-drawing-tools { display: grid; grid-template-columns: minmax(155px, 1fr) minmax(180px, 1.2fr); align-items: end; gap: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 11px; background: #f8f8f3; }
+    .notebook-drawing-tools .notebook-control input[type="range"] { width: 100%; }
+    .notebook-canvas { display: block; width: 100%; height: clamp(170px, 28vw, 250px); touch-action: none; border: 1px dashed #b7c3b7; border-radius: 12px; background: white; cursor: crosshair; }
+    @media (max-width: 850px) {
+      .notebook-toolbar { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+      .notebook-color-tools { grid-column: 1 / -1; }
+    }
+    .maze-levels { display: flex; flex-wrap: wrap; gap: 7px; margin: 18px 0; }
+    .maze-level { padding: 7px 10px; border: 1px solid #dce8de; border-radius: 9px; background: var(--green-soft); color: var(--green-dark); font-size: 12px; font-weight: 700; }
+    .maze-gameover { text-align: center; padding: 17px 0; }
+    .toast { position: fixed; right: 20px; bottom: 20px; z-index: 5; max-width: min(390px, calc(100vw - 40px)); padding: 12px 16px; border-radius: 12px; background: #252722; color: white; box-shadow: var(--shadow); font-size: 13px; animation: appear .18s ease both; }
+    .footer-note { margin-top: 33px; color: #8a8d84; text-align: center; font-size: 11px; line-height: 1.6; }
+    #accessGate[hidden], #appShell[hidden] { display: none; }
+    .access-gate { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: var(--paper); }
+    .access-card { width: min(440px, 100%); padding: clamp(22px, 5vw, 38px); text-align: center; }
+    .access-mark { display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 20px; background: var(--green); color: white; font-size: 32px; }
+    .access-card h1 { margin: 0 auto 10px; font-size: 34px; }
+    .access-card p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .access-form { display: grid; gap: 10px; margin-top: 20px; text-align: left; }
+    .access-form label { font-size: 13px; font-weight: 700; }
+    .access-form input { width: 100%; margin-top: 6px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: white; color: var(--ink); }
+    .access-error { min-height: 20px; margin: 0 !important; color: var(--red) !important; font-size: 12px !important; }
+    .cloud-loader { width: min(270px, 80vw); height: 9px; margin: 8px auto 0; overflow: visible; border-radius: 9px; background: #e7e9df; }
+    .cloud-loader-track { position: relative; height: 100%; overflow: hidden; border-radius: inherit; }
+    .cloud-loader-track::before { position: absolute; inset: 0; content: ""; background: linear-gradient(90deg, transparent, #9cc5a8, transparent); animation: cloud-progress 1.6s ease-in-out infinite; }
+    .cloud-loader-dice { position: absolute; top: 50%; left: 0; z-index: 1; font-size: 20px; line-height: 1; transform: translate(-50%, -50%); animation: cloud-dice 1.6s ease-in-out infinite; }
+    @keyframes cloud-progress { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+    @keyframes cloud-dice { 0% { left: 0; transform: translate(-50%, -50%) rotate(0); } 100% { left: 100%; transform: translate(-50%, -50%) rotate(720deg); } }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; clip-path: inset(50%); border: 0; }
+    @media (max-width: 700px) {
+      .shell { width: min(100% - 24px, 550px); padding-top: 15px; }
+      .topbar { align-items: center; flex-wrap: wrap; margin-bottom: 27px; }
+      .top-actions { width: 100%; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+      .top-select { max-width: 118px; padding-left: 8px; }
+      .music-select { flex: 1; max-width: none; min-width: 90px; padding-right: 8px; }
+      .music-volume { width: 100%; justify-content: flex-end; }
+      .music-volume input { width: min(180px, 48vw); }
+      .icon-button { width: 37px; height: 37px; }
+      .welcome { grid-template-columns: 1fr; gap: 17px; }
+      .daily-card { padding: 16px; }
+      .daily-word { font-size: 23px; }
+      .stat-row { gap: 7px; margin-top: 19px; }
+      .stat { display: block; padding: 11px; }
+      .stat-icon { width: 30px; height: 30px; margin-bottom: 8px; font-size: 14px; }
+      .stat-num { font-size: 17px; }
+      .stat-label { font-size: 10px; }
+      .tab { padding: 10px 12px; font-size: 12px; }
+      .panel-heading { align-items: flex-start; }
+      .panel-heading h2 { font-size: 23px; }
+      .wrong-item, .word-item { grid-template-columns: 1fr auto; gap: 8px 10px; padding: 13px; }
+      .wrong-def, .word-def { grid-column: 1 / -1; grid-row: 2; }
+      .item-actions { grid-column: 2; grid-row: 1; }
+      .search { width: 100%; margin-left: 0; }
+      .spelling-form { flex-direction: column; }
+      .guide-grid { grid-template-columns: 1fr; }
+      .editor-actions > button { flex: 1 1 auto; }
+      .notebook-toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+      .notebook-format-actions { grid-column: 1 / -1; }
+      .notebook-color-tools { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .notebook-color-tools .soft-button { grid-column: 1 / -1; justify-self: start; }
+      .notebook-drawing-tools { grid-template-columns: 1fr; gap: 10px; }
+      .notebook-drawing-tools .notebook-control input[type="range"] { max-width: none; }
+      .notebook-editor { min-height: 250px; padding: 14px; }
+    }
+    @media print {
+      body { background: white; }
+      .topbar, .welcome, .stat-row, .tabs, .footer-note, .panel-heading .primary, .filter-row, .item-actions, .toast { display: none !important; }
+      .shell { width: 100%; padding: 0; }
+      main { padding: 0; }
+      .panel:not(#vocabPanel) { display: none !important; }
+      #vocabPanel { display: block !important; }
+      .panel-heading { margin: 0 0 12px; }
+      .panel-heading h2 { font-size: 22px; }
+      .word-list { grid-template-columns: 1fr 1fr; gap: 6px; }
+      .word-item { grid-template-columns: .55fr 1.45fr; gap: 8px; padding: 8px; break-inside: avoid; box-shadow: none; }
+      .word-name { font-size: 13px; }
+      .word-def { font-size: 10px; }
+      .word-name small { font-size: 9px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="access-gate" id="accessGate" aria-labelledby="accessTitle">
+    <div class="card access-card">
+      <div class="access-mark" aria-hidden="true">🎲</div>
+      <div class="eyebrow">MR. DAHL VOCAB</div>
+      <h1 id="accessTitle">Class access</h1>
+      <p>Enter the class coupon code to continue. Ask your teacher if you do not have it.</p>
+      <form class="access-form" id="couponForm">
+        <label for="couponInput">Coupon code
+          <input id="couponInput" type="password" autocomplete="off" required aria-describedby="couponError">
+        </label>
+        <button class="primary" type="submit">Enter website</button>
+        <p class="access-error" id="couponError" role="alert" aria-live="polite"></p>
+      </form>
+      <p class="access-security-note">This simple entry screen is not strong password protection. Do not put private information in the shared notebook.</p>
+    </div>
+  </section>
+  <div class="shell" id="appShell" hidden>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">✿</div>
+        <div><div class="brand-name">Mr. Dahl Vocab</div><div class="brand-note" data-i18n="brandNote">Read · Listen · Learn · Play</div></div>
+      </div>
+      <div class="top-actions">
+        <label class="sr-only" for="languageSelect">Language</label>
+        <select class="top-select" id="languageSelect" aria-label="Choose language">
+          <option value="en">🇬🇧 English</option><option value="zh">🇨🇳 中文</option>
+        </select>
+        <label class="sr-only" for="musicSelect">Background music</label>
+        <select class="top-select music-select" id="musicSelect" aria-label="Background music"></select>
+        <label class="music-volume" for="musicVolume"><span data-i18n="musicVolume">Music volume</span>
+          <input id="musicVolume" type="range" min="0" max="100" step="1" value="100" aria-label="Music volume">
+          <output id="musicVolumeValue" for="musicVolume">100%</output>
+        </label>
+        <button class="icon-button" id="soundButton" title="Toggle coach sound" aria-label="Toggle coach sound">🔊</button>
+        <button class="icon-button" id="settingsButton" title="Voice settings" aria-label="Voice settings">⚙</button>
+      </div>
+    </header>
+
+    <section class="welcome" aria-labelledby="welcomeTitle">
+      <div>
+        <div class="eyebrow" data-i18n="eyebrow">Read · Listen · Speak</div>
+        <h1 id="welcomeTitle" data-i18n="welcomeTitle">Words can change the world.</h1>
+        <p class="intro" data-i18n="intro">Build vocabulary with listening, spelling, definition challenges, and a five-level maze.</p>
+      </div>
+      <aside class="daily-card">
+        <div class="small" data-i18n="dailyLabel">TODAY'S WORD</div>
+        <div class="daily-word">courage</div>
+        <p class="daily-def" data-i18n="dailyDef">The strength to do something difficult even when you feel afraid.</p>
+      </aside>
+    </section>
+
+    <section class="stat-row" aria-label="Your progress">
+      <div class="stat"><div class="stat-icon">🌱</div><div><div class="stat-num" id="statWords">29</div><div class="stat-label" data-i18n="statWords">Words to explore</div></div></div>
+      <div class="stat"><div class="stat-icon">⭐</div><div><div class="stat-num" id="statScore">—</div><div class="stat-label" data-i18n="statScore">Last quiz score</div></div></div>
+      <div class="stat"><div class="stat-icon">📖</div><div><div class="stat-num" id="statWrong">0</div><div class="stat-label" data-i18n="statWrong">Words to review</div></div></div>
+    </section>
+
+    <nav class="tabs" aria-label="Study sections" role="tablist">
+      <button class="tab active" data-tab="quiz" role="tab" aria-selected="true" data-i18n="tabQuiz">Quick quiz</button>
+      <button class="tab" data-tab="challenge" role="tab" aria-selected="false" data-i18n="tabChallenge">Challenge</button>
+      <button class="tab" data-tab="workbook" role="tab" aria-selected="false" data-i18n="tabWorkbook">Wrong answers</button>
+      <button class="tab" data-tab="vocab" role="tab" aria-selected="false" data-i18n="tabVocab">Vocab list</button>
+      <button class="tab" data-tab="editor" role="tab" aria-selected="false" data-i18n="tabEditor">Editor</button>
+      <button class="tab" data-tab="notebook" role="tab" aria-selected="false" data-i18n="tabNotebook">Notebook</button>
+      <button class="tab" data-tab="speak" role="tab" aria-selected="false" data-i18n="tabSpeak">Speaking coach</button>
+      <button class="tab" data-tab="game" role="tab" aria-selected="false" data-i18n="tabGame">Learning game</button>
+      <button class="tab" data-tab="guide" role="tab" aria-selected="false" data-i18n="tabGuide">Guide & source</button>
+    </nav>
+
+    <main>
+      <section class="panel" id="quizPanel" role="tabpanel"></section>
+      <section class="panel" id="challengePanel" role="tabpanel" hidden></section>
+      <section class="panel" id="workbookPanel" role="tabpanel" hidden></section>
+      <section class="panel" id="vocabPanel" role="tabpanel" hidden></section>
+      <section class="panel" id="editorPanel" role="tabpanel" hidden></section>
+      <section class="panel" id="notebookPanel" role="tabpanel" hidden></section>
+      <section class="panel" id="speakPanel" role="tabpanel" hidden></section>
+      <section class="panel" id="gamePanel" role="tabpanel" hidden></section>
+      <section class="panel" id="guidePanel" role="tabpanel" hidden></section>
+    </main>
+    <footer class="footer-note"><span data-i18n="footer">No student account needed. Quiz progress stays in this browser; class notes and shared vocabulary sync through Supabase.</span><br><span id="cloudStatus" role="status" aria-live="polite"></span><div class="cloud-loader" id="cloudLoader" hidden aria-label="Connecting to Supabase"><div class="cloud-loader-track"><span class="cloud-loader-dice" aria-hidden="true">🎲</span></div></div></footer>
+  </div>
+  <div id="toastRegion" aria-live="polite"></div>
+
+  <script>
+    let WORDS = [
+      { word: "fascinated", pos: "adjective", ipa: "/ˈfæsɪneɪtɪd/", en: "Feeling extremely interested in something, so that you cannot stop thinking about it.", zh: "着了迷的；极感兴趣的" },
+      { word: "fascinating", pos: "adjective", ipa: "/ˈfæsɪneɪtɪŋ/", en: "So interesting or attractive that you want to keep looking at it or listening to it.", zh: "引人入胜的；极有吸引力的" },
+      { word: "distorted", pos: "adjective", ipa: "/dɪˈstɔːrd/", en: "Changed so that something is no longer true or accurate.", zh: "被歪曲的；失真的" },
+      { word: "consult", pos: "verb", ipa: "/kənˈsʌlt/", en: "To ask someone for advice, or to look at a book or report to get information.", zh: "请教；查阅" },
+      { word: "physiotherapy", pos: "noun", ipa: "/ˌfɪzioʊˈθerəpi/", en: "Medical treatment that uses exercise or massage instead of medicine.", zh: "理疗；物理治疗" },
+      { word: "solidarity", pos: "noun", ipa: "/ˌsɑːlɪˈdærəti/", en: "The state of people supporting each other because they share the same aim.", zh: "团结；休戚与共" },
+      { word: "exiled", pos: "verb / adjective", ipa: "/ɪɡˈzaɪld/", en: "To be forced to leave your country, town, or community; having been sent away.", zh: "被流放的；被驱逐的" },
+      { word: "spared", pos: "verb", ipa: "/sperd/", en: "To not harm or kill someone, even though you have the power to do it.", zh: "饶过；免于被害" },
+      { word: "cheeky", pos: "adjective", ipa: "/ˈtʃiːki/", en: "Behaving in a playful way that is a little rude, but in a funny way.", zh: "淘气调皮的；有点无礼但可爱" },
+      { word: "throb", pos: "verb / noun", ipa: "/θrɑːb/", en: "To beat or pulse strongly because of pain or strong feeling.", zh: "（因疼痛或强烈情感）跳动、抽痛" },
+      { word: "conscious", pos: "adjective", ipa: "/ˈkɑːnʃəs/", en: "Awake and able to think and feel; also able to notice something.", zh: "清醒有意识的；察觉到的" },
+      { word: "enduring", pos: "adjective", ipa: "/ɪnˈdʊrɪŋ/", en: "Continuing to exist for a very long time, even after the thing itself is gone.", zh: "持久的；经久不衰的" },
+      { word: "dab", pos: "verb / noun", ipa: "/dæb/", en: "To touch something lightly with a small amount of liquid; a small amount of liquid.", zh: "轻点；少量（液体）" },
+      { word: "hurdles", pos: "noun", ipa: "/ˈhɜːrdlz/", en: "A difficulty that must be solved before you can succeed.", zh: "困难；障碍" },
+      { word: "purred", pos: "verb / noun", ipa: "/pɜːrd/", en: "The low sound a cat makes when it is happy; to make this sound.", zh: "（猫高兴时）呼噜呼噜叫" },
+      { word: "coma", pos: "noun", ipa: "/ˈkoʊmə/", en: "A state in which a person is unconscious and cannot be woken for days.", zh: "昏迷" },
+      { word: "amid", pos: "preposition", ipa: "/əˈmɪd/", en: "In the middle of something such as a situation, a crowd, or noise.", zh: "在……之中" },
+      { word: "specimen", pos: "noun", ipa: "/ˈspesɪmən/", en: "A small amount of something given so it can be examined in a laboratory.", zh: "标本；样本" },
+      { word: "crooked", pos: "adjective", ipa: "/ˈkrʊkɪd/", en: "Not straight; bent out of shape.", zh: "歪的；不直的" },
+      { word: "visa", pos: "noun / verb", ipa: "/ˈviːzə/", en: "An official document that lets a person from another country enter or stay.", zh: "签证" },
+      { word: "pledge", pos: "noun / verb", ipa: "/pledʒ/", en: "A serious promise that someone makes publicly; to promise formally.", zh: "誓言；郑重承诺" },
+      { word: "numb", pos: "adjective / verb", ipa: "/nʌm/", en: "Unable to feel pain or emotion; to make someone unable to feel anything.", zh: "麻木的；失去感觉的" },
+      { word: "neurosurgeon", pos: "noun", ipa: "/ˈnjʊroʊˌsɜːrdʒən/", en: "A doctor who performs operations on the brain and the nerves.", zh: "神经外科医生" },
+      { id: "martyr-n", word: "martyr", pos: "noun", ipa: "/ˈmɑːrtər/", en: "Someone who dies or suffers greatly for a cause they believe in.", zh: "殉道者；为理想献身的人" },
+      { id: "martyr-v", word: "martyr", pos: "verb", ipa: "/ˈmɑːrtər/", en: "To make someone into a martyr, usually by forcing them to suffer.", zh: "使（某人）成为牺牲品；迫害致死" },
+      { id: "feud-n", word: "feud", pos: "noun", ipa: "/fjuːd/", en: "A long-lasting angry quarrel between two people or families.", zh: "宿怨；长期争吵" },
+      { id: "feud-v", word: "feud", pos: "verb", ipa: "/fjuːd/", en: "To quarrel with someone for a long time.", zh: "长期争吵；结仇" },
+      { word: "reconciliation", pos: "noun", ipa: "/ˌrekənsɪliˈeɪʃn/", en: "The process of two sides making peace again after a disagreement.", zh: "和解；调和" },
+      { word: "orderly", pos: "adjective / noun", ipa: "/ˈɔːrdərli/", en: "Arranged in a neat and sensible way; an informal, old term for a hospital attendant.", zh: "整齐的；有条理的；（英旧）医院护理员" }
+    ];
+
+    const ORIGINAL_WORDS = new Map(WORDS.map(entry => [entry.id || entry.word, { ...entry }]));
+    const TEXT = {
+      en: {
+        brandNote: "Read · Listen · Learn · Play", eyebrow: "Read · Listen · Speak · Play", welcomeTitle: "Grow your words. Find your way.",
+        intro: "Build vocabulary with listening, spelling, definition challenges, and a five-level maze. Learn at your own pace and play at your own risk.",
+        dailyLabel: "TODAY'S WORD", dailyDef: "The strength to do something difficult even when you feel afraid.",
+        statWords: "Words to explore", statScore: "Last quiz score", statWrong: "Words to review",
+        tabQuiz: "Full test", tabChallenge: "Challenge", tabWorkbook: "Wrong answers", tabVocab: "Vocab list", tabEditor: "Editor", tabNotebook: "Notebook", tabSpeak: "Speaking coach", tabGame: "Learning game", tabGuide: "Guide & source",
+        footer: "No student account needed. Quiz progress stays in this browser; class notes and shared vocabulary sync through Supabase. Speech recognition depends on your browser and microphone permissions.",
+        quizTitle: "Full vocabulary test", quizSub: "All {words} vocabulary entries appear twice in a randomized order: type each spelling, then answer its definition question.", startQuiz: "Start full {count}-question test",
+        readAgain: "🔊 Hear the word", listenLabel: "THE COACH SAYS", spelling: "SPELLING", definition: "DEFINITION",
+        spellingPrompt: "Listen to the word and type its spelling from memory.", definitionPrompt: "Listen to the word and choose the best definition.",
+        typeSpelling: "Type the word you heard…", checkSpelling: "Check spelling", enterSpelling: "Type the spelling to continue.",
+        next: "Next question →", finishQuiz: "See my score", choose: "Choose an answer to continue.", correct: "That's right — lovely work!", wrong: "Not quite. The correct answer is",
+        resultTitle: "Test complete!", resultLine: "You got {score} out of {total} questions right.", reviewLine: "{count} word(s) added to your wrong-answer workbook.",
+        scoreCircle: "Your score", scoreBreakdown: "{score} correct out of {total}",
+        tryAgain: "Try another round", emptyWrongTitle: "Your workbook is empty!", emptyWrongText: "Missed answers will show up here so you can practise them again.",
+        workbookTitle: "Wrong-answer workbook", workbookSub: "Review the word, your answer, and the correct meaning. Ask the coach to read each word aloud.",
+        clearWrong: "Clear workbook", coach: "🔊 Coach", noAnswer: "No answer", yourAnswer: "Your answer:", askedAs: "Missed in",
+        challengeTitle: "Definition challenge", challengeSub: "Explain the meaning in your own words. There are no multiple-choice clues here.",
+        challengeHint: "Write a clear definition in English. Press Finish answer when you're ready to continue.",
+        finishAnswer: "Finish answer →", revealDefinition: "Show a model definition", gotIt: "Next word →", challengeDone: "Challenge complete!",
+        challengeResult: "You worked through all {count} challenge words. Great effort!", startChallenge: "Start challenge",
+        answerSaved: "Answer saved. Compare it with this model definition:", modelAnswer: "Model definition:",
+        vocabTitle: "The vocabulary garden", vocabSub: "Every word with an English and Chinese definition. Print this page for a paper study sheet.",
+        editorTitle: "Definition editor", editorSub: "Choose a vocabulary entry and update its English and Chinese definitions. Changes are shared through Supabase and used throughout the study activities.",
+        editorWord: "Vocabulary word", editorSpelling: "Spelling", editorPartOfSpeech: "Part of speech", editorEnglish: "English definition", editorChinese: "Chinese definition",
+        editorSave: "Save word", editorReset: "Restore original definitions", editorSaved: "Word and definitions saved.", editorResetDone: "Original definitions restored.",
+        editorDelete: "Delete word", editorDeleteConfirm: "Delete {word} from the shared vocabulary for everyone?", editorDeleted: "Word deleted from the shared vocabulary.",
+        editorLastWord: "Keep at least one vocabulary word in the list.",
+        editorRequired: "Enter both definitions before saving.", editorTooLong: "Each definition must be 500 characters or fewer.", editorInvalidWord: "Use letters, apostrophes, or hyphens in a word that starts with a letter.",
+        editorAddWord: "Add a new word", editorCreateTitle: "Add vocabulary entry", editorWordName: "Word", editorPartOfSpeech: "Part of speech",
+        editorPronunciation: "Pronunciation (optional)", editorCreate: "Add word", editorDuplicate: "That word and part of speech already exist.", editorAdded: "Word added to the shared vocabulary.",
+        editorSyncNote: "Vocabulary entries and definition changes are shared publicly through Supabase. Anyone who can access this app can add or edit them.",
+        couponInvalid: "That coupon code is not correct. Ask your teacher for the class code.",
+        couponSecurityNote: "This screen is a simple class gate, not strong password protection. Do not put private information in the shared notebook.",
+        notebookTitle: "Notebook", notebookSub: "Write or draw freely. Notes do not affect quizzes or vocabulary.",
+        personalNotebook: "Personal notebook", classNotebook: "Class notebook", personalNotebookNote: "Private to this browser on this computer; it is not sent to the class.",
+        classNotebookNote: "This class notebook is shared publicly through Supabase. Anyone who can access this app can read and edit it.",
+        cloudMissing: "Supabase is not configured yet (publishable key missing); changes stay in this browser.",
+        cloudConnecting: "Connecting to Supabase…",
+        cloudConnected: "Shared notebook and vocabulary are connected to Supabase.",
+        cloudFailed: "Supabase sync failed: {error}. Your local copy is still saved.",
+        notebookPlaceholder: "Start writing here…", notebookBold: "Bold", notebookItalic: "Italic", notebookHighlight: "Highlight",
+        notebookFont: "Font", notebookHighlightColor: "Highlight color", notebookTextColor: "Text color",
+        notebookDraw: "Draw", notebookPen: "Pen color", notebookThickness: "Pen size", notebookClearDrawing: "Clear drawing",
+        notebookClearPage: "Clear page", notebookCleared: "Notebook page cleared.",
+        gameDailyLimit: "You have used all 3 Learning Game plays for today. You can play again tomorrow.",
+        gameDailyCount: "Plays today: {used} of 3", gameDailyLeft: "Plays remaining today: {left}",
+        print: "🖨 Print vocab list", search: "Search words…", allWords: "All words", speakWord: "🔊 Word", speakDef: "🔊 Definition", editDefinition: "Edit definition",
+        speakTitle: "Speaking coach", speakSub: "Listen to a word, then say it into your microphone. The browser compares what it hears.",
+        chooseWord: "Choose a word", sayIt: "🎙 Say this word", stopListen: "Stop listening", playTarget: "🔊 Hear the word",
+        micReady: "Press the microphone button, allow microphone access, and say the word clearly.", micUnsupported: "Speech recognition is not supported in this browser. Try Chrome or Edge, or use the coach buttons to listen.",
+        listening: "Listening… say the word now.", scoreLabel: "Pronunciation match", scoreHelp: "This is an approximate speech-to-text match, not a professional pronunciation assessment.",
+        noMatch: "I couldn't recognize that word. Try speaking slowly and clearly.", heard: "I heard:", soundOn: "Coach sound on", soundOff: "Coach sound off",
+        musicOff: "Music: off", musicVolume: "Music volume", musicPractice: "Calm practice music", musicGame: "Game music (unlock in game)",
+        musicCalmRain: "Soft piano", musicCalmFocus: "Quiet focus", musicCalmDrift: "Gentle drift",
+        musicGameDisco: "Pixel disco", musicGameFunk: "Funky chase", musicGameArcade: "Neon arcade",
+        musicUnavailable: "Background music is not supported in this browser.",
+        settingTitle: "Coach voice", noVoices: "Default system voice", languageEnglish: "English", languageChinese: "中文",
+        permissionError: "Microphone access was blocked or unavailable. Check your browser permission and try again.",
+        listEmpty: "No words match your search.", stop: "Stop", allDone: "All done!", challengeContinue: "Finish answer to continue.",
+        questionCount: "Question {current} of {total}", misses: "{count} missed", right: "correct", micError: "The microphone stopped before a word was heard. Please try again.",
+        guideTitle: "How to use & open source", guideSubtitle: "A quick tour of the study tools, plus the complete source code for this one-file website.",
+        guideQuizTitle: "1. Take the full test", guideQuiz: "Press Start. Every listed word appears once as a spelling question and once as a definition question, shuffled together. Listen to the coach; type spellings and choose definition answers. Your percentage and review words appear when all questions are finished.",
+        guideStudyTitle: "2. Practise and review", guideStudy: "Use Challenge to write definitions in your own words. The Editor lets you change spelling, part of speech, definitions, or add and delete shared vocabulary; changes sync through Supabase. Wrong answers saves missed spellings and definitions with a coach button. Vocab list shows both languages and can be printed.",
+        guideNotebookTitle: "3. Use the notebooks", guideNotebook: "Type and format notes, highlight text, or draw on the notebook canvas. Personal notebook pages stay on this browser and computer. The class notebook is shared publicly through Supabase, so anyone with access to the app can edit it.",
+        guideSpeechTitle: "4. Listen and speak", guideSpeech: "Choose English or Chinese for the interface, turn coach audio on or off, or select a system voice with ⚙. Pick a calm background track for practice; funky game tracks are only available after unlocking the Learning Game. Adjust the music volume with the slider (default 100%, boosted to 4× the previous level). The music automatically ducks while the coach speaks. The Speaking coach needs microphone permission and a browser with speech recognition, such as Chrome or Edge.",
+        guideProgressTitle: "5. Your progress & privacy", guideProgress: "No student account is required. Quiz score, language, sound, voice choice, music choices, private notes, and game plays stay in this browser's local storage. Class notebook content and vocabulary additions, edits, and deletions are public and editable by anyone with access to Supabase. The coupon screen is a casual gate, not security; do not enter private information.",
+        sourceTitle: "Copy-paste website source", sourceDescription: "This complete website is a single HTML file: styles, vocabulary, translations, study activities, and code are all included. Save or upload it as index.html and host it over HTTP or HTTPS for Supabase sharing.",
+        copyCode: "Copy full source code", copyDone: "Source code copied. Save it as index.html to run the website.", copyFailed: "Could not copy automatically. Select the code below and copy it manually.",
+        licenseTitle: "Open-source license — MIT", licenseNote: "You may use, modify, and share this code under the MIT License. Keep this copyright and permission notice with copies of the software.",
+        gameTitle: "Vocabulary maze", gameSubtitle: "Explore a randomized maze, answer vocabulary questions, defeat the escaping word demons, and reach the exit.",
+        gameStart: "Start timed game", gameResume: "Play again", gameLevel: "Level {level} of 5", gameLives: "Lives", gameDemons: "Demons remaining",
+        gamePowerups: "Power-ups", gameLegend: "🟡 You · 🔵 Blue demon · 🔴 Red chaser (2× speed) · ⚡ Speed boost · ✨ Cross-wall · 🚪 Exit",
+        gameLocked: "Score at least 80% on the full vocabulary test to unlock the learning game. Challenge and speaking scores do not count.",
+        gameUnlock: "Your full-test score of {score}% unlocks {minutes} minutes of game time.",
+        gameTime: "Game time: {time}", gameTimeUp: "Your game time is up. The maze is paused. Take another full vocabulary test to unlock more time.",
+        gameRetake: "Take the full test",
+        gameControls: "Move with ↑ ↓ ← → or WASD. On touch screens, use the direction buttons. Find each demon, answer its question, pick up its reward, and reach the exit after defeating them all.",
+        gameQuestionDefinition: "Choose the meaning of this word.", gameQuestionSpelling: "Listen carefully, then spell the word.",
+        gameSubmit: "Submit answer", gameContinue: "Continue", gameEmpty: "Type your answer to continue.",
+        gameCorrect: "Correct! The demon takes a hit.", gameDemonHit: "Correct! This demon has {health} hit(s) left.",
+        gameWrong: "Not quite. You lost a life. The right answer is {answer}.", gameEscaped: "A word demon escaped! You lost a life.",
+        gameSpeed: "Speed boost", gameWall: "Cross-wall power", gameSpeedActive: "Speed boost: {seconds}s", gameWallActive: "Cross-wall: {seconds}s",
+        gameExitLocked: "Defeat every demon to open the exit.", gameExitReady: "All demons defeated! Reach the glowing exit.",
+        gameLevelDone: "Level {level} cleared!", gameNextLevel: "Enter level {level}", gameWon: "Maze mastered!", gameWonText: "You cleared all five vocabulary maze levels!",
+        gameOver: "Out of lives!", gameOverText: "The word demons caught up. Ready to try the maze again?",
+        gamePractice: "Each demon asks one vocabulary question. Blue demons keep their usual behavior; red demons chase you and move twice as fast. Higher levels add demon health and faster escapes. Correct answers defeat demons and drop a random reward: speed boost (70%) or cross-wall ability (30%). Funky game music unlocks with game time; calm music is available for study. Pass the full vocabulary test with 80–89% for 2 minutes, 90–99% for 5 minutes, or 100% for 10 minutes. You may start at most three games per day. Challenge and speaking scores do not count.",
+        guideGameTitle: "6. Play the learning game", guideGame: "In Learning game, guide your student through five randomized mazes. Bump into a word demon to answer its question. Correct answers defeat it and drop a speed boost (70%) or cross-wall ability (30%); wrong answers cost a life. You have three lives, and later levels have tougher demons. Defeat all demons, then reach the exit. Access is earned only with the full vocabulary test: 80–89% gives 2 minutes, 90–99% gives 5 minutes, and 100% gives 10 minutes. The timer starts when you begin playing and pauses the game when time expires. You may start at most three game plays per day. Challenge and speaking results do not count."
+      },
+      zh: {
+        brandNote: "阅读 · 聆听 · 学习 · 游戏", eyebrow: "阅读 · 聆听 · 表达 · 游戏", welcomeTitle: "拓展词汇，探索迷宫。",
+        intro: "通过听音拼写、释义挑战和五关迷宫学习词汇。按自己的节奏学习，尽情享受游戏。",
+        dailyLabel: "今日单词", dailyDef: "即使感到害怕，仍有力量去做困难事情。",
+        statWords: "探索词汇", statScore: "上次测验成绩", statWrong: "待复习词汇",
+        tabQuiz: "完整测验", tabChallenge: "进阶挑战", tabWorkbook: "错题本", tabVocab: "词汇表", tabEditor: "编辑器", tabNotebook: "笔记本", tabSpeak: "口语教练", tabGame: "学习游戏", tabGuide: "使用指南与源码",
+        footer: "学生无需登录。测验进度保存在此浏览器；班级笔记和共享词汇通过 Supabase 同步。语音识别取决于浏览器支持和麦克风权限。",
+        quizTitle: "完整词汇测验", quizSub: "全部 {words} 个词条都会以随机顺序各考两次：自己拼写一次，再回答释义一次。", startQuiz: "开始完整的 {count} 题测验",
+        readAgain: "🔊 再听一次", listenLabel: "教练正在朗读", spelling: "拼写", definition: "释义",
+        spellingPrompt: "听清楚后，凭记忆自己输入这个单词的拼写。", definitionPrompt: "听单词，选择最合适的释义。",
+        typeSpelling: "输入你听到的单词拼写…", checkSpelling: "检查拼写", enterSpelling: "请输入拼写后继续。",
+        next: "下一题 →", finishQuiz: "查看成绩", choose: "请选择一个答案后继续。", correct: "答对了！太棒了！", wrong: "再试一次。正确答案是",
+        resultTitle: "测验完成！", resultLine: "你答对了 {total} 题中的 {score} 题。", reviewLine: "{count} 个错题已加入错题本。",
+        scoreCircle: "你的成绩", scoreBreakdown: "{total} 题中答对 {score} 题",
+        tryAgain: "再来一轮", emptyWrongTitle: "错题本还是空的！", emptyWrongText: "答错的题目会出现在这里，方便你再次练习。",
+        workbookTitle: "错题本", workbookSub: "复习单词、你的答案和正确释义。点击教练按钮可以听单词与释义。",
+        clearWrong: "清空错题本", coach: "🔊 教练朗读", noAnswer: "未作答", yourAnswer: "你的答案：", askedAs: "错题类型",
+        challengeTitle: "释义进阶挑战", challengeSub: "用自己的话解释词义，不提供选择提示。", challengeHint: "用英语写出清晰的释义。准备好后点击“完成答案”。",
+        finishAnswer: "完成答案 →", revealDefinition: "查看参考释义", gotIt: "下一个词 →", challengeDone: "挑战完成！",
+        challengeResult: "你完成了全部 {count} 道释义挑战。做得真棒！", startChallenge: "开始挑战",
+        answerSaved: "答案已保存。请对照参考释义：", modelAnswer: "参考释义：",
+        vocabTitle: "Mr. Dahl 词汇表", vocabSub: "每个单词都附有中英文释义。可以打印成纸质复习表。",
+        editorTitle: "释义编辑器", editorSub: "选择一个词条并修改其中英文释义。更改会通过 Supabase 共享，并应用于所有学习活动。",
+        editorWord: "词汇", editorSpelling: "拼写", editorPartOfSpeech: "词性", editorEnglish: "英文释义", editorChinese: "中文释义",
+        editorSave: "保存单词", editorReset: "恢复原始释义", editorSaved: "单词和释义已保存。", editorResetDone: "已恢复原始释义。",
+        editorDelete: "删除单词", editorDeleteConfirm: "要为所有人从共享词库删除 {word} 吗？", editorDeleted: "单词已从共享词库删除。",
+        editorLastWord: "词库中至少要保留一个单词。",
+        editorRequired: "请填写中英文释义后再保存。", editorTooLong: "每条释义最多 500 个字符。", editorInvalidWord: "单词须以字母开头，只能包含字母、撇号或连字符。",
+        editorAddWord: "添加新词", editorCreateTitle: "添加词汇", editorWordName: "单词", editorPartOfSpeech: "词性",
+        editorPronunciation: "发音（可选）", editorCreate: "添加单词", editorDuplicate: "该单词和词性已存在。", editorAdded: "单词已添加到共享词库。",
+        editorSyncNote: "词汇和释义修改会通过 Supabase 公开共享。任何能访问此应用的人都可以添加或编辑。",
+        couponInvalid: "优惠码不正确。请向老师询问班级代码。",
+        couponSecurityNote: "此页面只是简单的班级入口，并非强密码保护。请勿在共享笔记中填写私人信息。",
+        notebookTitle: "笔记本", notebookSub: "自由书写或绘画。笔记不会影响测验或词库。",
+        personalNotebook: "个人笔记本", classNotebook: "班级笔记本", personalNotebookNote: "仅保存在此电脑的此浏览器中，不会发送给全班。",
+        classNotebookNote: "班级笔记通过 Supabase 公开共享。任何能访问此应用的人都可以阅读和编辑。",
+        cloudMissing: "Supabase 尚未配置（缺少 publishable key）；更改仍保存在此浏览器。",
+        cloudConnecting: "正在连接 Supabase……",
+        cloudConnected: "共享笔记本和词汇已连接到 Supabase。",
+        cloudFailed: "Supabase 同步失败：{error}。本地副本仍已保存。",
+        notebookPlaceholder: "从这里开始写……", notebookBold: "粗体", notebookItalic: "斜体", notebookHighlight: "高亮",
+        notebookFont: "字体", notebookHighlightColor: "高亮颜色", notebookTextColor: "文字颜色",
+        notebookDraw: "绘画", notebookPen: "画笔颜色", notebookThickness: "画笔粗细", notebookClearDrawing: "清除画布",
+        notebookClearPage: "清空页面", notebookCleared: "笔记页面已清空。",
+        gameDailyLimit: "今天的 3 次学习游戏机会已用完。明天可以继续玩。",
+        gameDailyCount: "今日游戏次数：{used}/3", gameDailyLeft: "今日剩余次数：{left}",
+        print: "🖨 打印词汇表", search: "搜索单词…", allWords: "全部词汇", speakWord: "🔊 单词", speakDef: "🔊 释义", editDefinition: "编辑释义",
+        speakTitle: "口语教练", speakSub: "先听单词，再对着麦克风朗读。浏览器会比对识别出的语音。",
+        chooseWord: "选择单词", sayIt: "🎙 开始朗读", stopListen: "停止聆听", playTarget: "🔊 听单词",
+        micReady: "点击麦克风按钮，允许使用麦克风，然后清晰地读出单词。", micUnsupported: "此浏览器不支持语音识别。请尝试 Chrome 或 Edge，也可使用朗读按钮。",
+        listening: "正在聆听……请现在读出单词。", scoreLabel: "发音匹配度", scoreHelp: "此评分根据语音转文字的匹配度估算，并非专业发音评测。",
+        noMatch: "没有识别到该单词。请放慢速度并清晰朗读。", heard: "识别结果：", soundOn: "教练语音已开启", soundOff: "教练语音已关闭",
+        musicOff: "背景音乐：关闭", musicVolume: "音乐音量", musicPractice: "平静练习音乐", musicGame: "游戏音乐（进入游戏解锁）",
+        musicCalmRain: "轻柔钢琴", musicCalmFocus: "安静专注", musicCalmDrift: "轻轻漂流",
+        musicGameDisco: "像素迪斯科", musicGameFunk: "放克追逐", musicGameArcade: "霓虹街机",
+        musicUnavailable: "此浏览器不支持背景音乐。",
+        settingTitle: "教练声音", noVoices: "系统默认语音", languageEnglish: "English", languageChinese: "中文",
+        permissionError: "无法使用麦克风。请检查浏览器权限后重试。",
+        listEmpty: "没有找到匹配的单词。", stop: "停止", allDone: "全部完成！", challengeContinue: "完成答案后继续。",
+        questionCount: "第 {current} 题，共 {total} 题", misses: "错 {count} 题", right: "答对", micError: "麦克风在识别到单词前停止了，请重试。",
+        guideTitle: "使用指南与开放源码", guideSubtitle: "快速了解学习功能，并查看这个单文件网站的完整源码。",
+        guideQuizTitle: "1. 完成完整测验", guideQuiz: "点击开始。每个词都会以随机顺序出现两次：一次听音拼写，一次选择释义。按照教练读音作答；完成全部题目后查看百分比成绩和错题。",
+        guideStudyTitle: "2. 练习和复习", guideStudy: "在进阶挑战中用自己的话写释义。编辑器可以修改拼写、词性和释义，也可以新增或删除共享词汇；更改通过 Supabase 同步。错题本会保存拼写和释义错题，并可点击教练按钮朗读。词汇表展示中英文释义，也可以打印。",
+        guideNotebookTitle: "3. 使用笔记本", guideNotebook: "可以输入并设置格式、突出显示文字，或在画布上绘图。个人笔记仅保存在此浏览器和电脑。班级笔记通过 Supabase 公开共享，任何能访问此应用的人都可以编辑。",
+        guideSpeechTitle: "4. 聆听与朗读", guideSpeech: "可选择中文或英文界面，打开或关闭教练声音，或点击 ⚙ 选择系统语音。练习时可选平静的背景音乐；解锁学习游戏后才可选择放克游戏音乐。可用音量滑块调整音乐音量（默认 100%，为之前音量的 4 倍）。教练朗读时音乐会自动降低音量。口语教练需要麦克风权限及支持语音识别的浏览器，例如 Chrome 或 Edge。",
+        guideProgressTitle: "5. 进度和隐私", guideProgress: "学生无需账号。测验成绩、语言、声音、语音和音乐选择、个人笔记及游戏次数仅保存在本浏览器中。班级笔记和词汇的新增、修改及删除会公开共享，任何能访问 Supabase 的人都可以编辑。优惠码页面只是简单入口，并非安全保护；请勿输入私人信息。",
+        sourceTitle: "复制网站完整源码", sourceDescription: "整个网站是一个 HTML 文件，包含样式、词汇、中英文、练习和代码。保存或上传为 index.html，并通过 HTTP 或 HTTPS 托管，才能使用 Supabase 共享。",
+        copyCode: "复制全部源码", copyDone: "源码已复制。保存为 index.html 即可打开网站。", copyFailed: "无法自动复制，请选中下方源码并手动复制。",
+        licenseTitle: "开源许可证 — MIT", licenseNote: "你可以根据 MIT 许可证使用、修改和分享此代码。请在软件副本中保留版权和许可声明。",
+        gameTitle: "词汇迷宫", gameSubtitle: "探索随机迷宫，回答词汇问题，击败逃跑的单词恶魔，找到出口。",
+        gameStart: "开始限时游戏", gameResume: "再玩一次", gameLevel: "第 {level} 关，共 5 关", gameLives: "生命", gameDemons: "剩余恶魔",
+        gamePowerups: "能力道具", gameLegend: "🟡 你 · 🔵 蓝色恶魔 · 🔴 红色追逐恶魔（速度 2 倍）· ⚡ 加速能力 · ✨ 穿墙能力 · 🚪 出口",
+        gameLocked: "完整词汇测验至少达到 80% 才能解锁学习游戏。进阶挑战和口语成绩不计入。",
+        gameUnlock: "完整测验成绩为 {score}%，解锁 {minutes} 分钟游戏时间。",
+        gameTime: "游戏时间：{time}", gameTimeUp: "游戏时间已用完，迷宫已暂停。请再次完成完整词汇测验以解锁更多时间。",
+        gameRetake: "参加完整测验",
+        gameControls: "使用方向键或 WASD 移动。触屏设备可以使用方向按钮。找到恶魔并回答词汇问题，收集奖励；击败全部恶魔后前往出口。",
+        gameQuestionDefinition: "选择这个单词的正确释义。", gameQuestionSpelling: "仔细听，然后拼写这个单词。",
+        gameSubmit: "提交答案", gameContinue: "继续", gameEmpty: "请输入答案后继续。",
+        gameCorrect: "答对了！恶魔受到一次攻击。", gameDemonHit: "答对了！恶魔还剩 {health} 点生命。",
+        gameWrong: "不太对。你失去了一条生命。正确答案是：{answer}。", gameEscaped: "一个单词恶魔逃跑了！你失去了一条生命。",
+        gameSpeed: "加速能力", gameWall: "穿墙能力", gameSpeedActive: "加速：{seconds} 秒", gameWallActive: "穿墙：{seconds} 秒",
+        gameExitLocked: "击败所有恶魔才能打开出口。", gameExitReady: "恶魔全部击败！前往发光的出口。",
+        gameLevelDone: "第 {level} 关通过！", gameNextLevel: "进入第 {level} 关", gameWon: "迷宫大师！", gameWonText: "你已经通过全部五关词汇迷宫！",
+        gameOver: "生命用完了！", gameOverText: "单词恶魔追上了你。准备好重新挑战迷宫了吗？",
+        gamePractice: "每个恶魔会提出一道词汇题。蓝色恶魔保持原有行动方式；红色恶魔会追逐你，速度是蓝色恶魔的两倍。更高关卡的恶魔生命更多、逃跑更快。答对可击败恶魔并获得随机奖励：加速能力（70%）或穿墙能力（30%）。解锁游戏时间后即可使用放克游戏音乐；学习时也可使用平静音乐。完整词汇测验达到 80–89% 可玩 2 分钟，90–99% 可玩 5 分钟，100% 可玩 10 分钟。进阶挑战和口语成绩不计入。",
+        guideGameTitle: "6. 玩学习游戏", guideGame: "在“学习游戏”中带领学生角色探索五个随机迷宫。碰到单词恶魔即可回答问题。答对可以击败恶魔并获得加速能力（70%）或穿墙能力（30%）；答错会损失一条生命。你有三条生命，后面的恶魔更难对付。击败所有恶魔后前往出口。只有完整词汇测验成绩可以解锁游戏：80–89% 可玩 2 分钟，90–99% 可玩 5 分钟，100% 可玩 10 分钟。开始游戏后计时，时间用完时游戏会暂停。每天最多可以开始 3 次游戏。进阶挑战和口语成绩不计入。"
+      }
+    };
+
+    const STORAGE_KEY = "malala-word-garden-progress-v1";
+    const SUPABASE_URL = "https://ryyfakqbrjkyipblvgjy.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_6Eh6rwbbAR6LEg1iu7FjJA_NqeODYf1";
+    const SUPABASE_REST_URL = `${SUPABASE_URL.replace(/\/+$/, "")}/rest/v1/`;
+    let cloudStatusKey = "cloudMissing";
+    let cloudStatusDetail = "";
+    let cloudReady = false;
+    let classNotebookDirty = false;
+    let lastNotebookUpdatedAt = "";
+    const MUSIC_TRACKS = {
+      "calm-piano": { mode: "calm", label: "musicCalmRain", bpm: 58, wave: "sine", melody: [60, null, 64, null, 67, null, 64, null, 62, null, 65, null, 69, null, 65, null], chords: [48, 55, 60] },
+      "calm-focus": { mode: "calm", label: "musicCalmFocus", bpm: 66, wave: "triangle", melody: [60, null, 67, 64, null, 67, 72, null, 59, null, 65, 62, null, 65, 71, null], chords: [47, 54, 59] },
+      "calm-drift": { mode: "calm", label: "musicCalmDrift", bpm: 52, wave: "sine", melody: [57, null, 60, null, 64, null, 60, null, 55, null, 59, null, 62, null, 59, null], chords: [43, 50, 55] },
+      "game-disco": { mode: "game", label: "musicGameDisco", bpm: 122, wave: "square", melody: [72, null, 76, 79, null, 76, 79, null, 74, null, 77, 81, null, 77, 81, null], bass: [36, null, 36, null, 43, null, 43, null, 34, null, 34, null, 41, null, 41, null] },
+      "game-funk": { mode: "game", label: "musicGameFunk", bpm: 108, wave: "sawtooth", melody: [67, null, 70, 72, null, 75, 72, null, 65, null, 69, 72, null, 74, 69, null], bass: [36, 36, null, 43, 46, null, 43, 34, 34, null, 41, 43, null, 46, 41, null] },
+      "game-arcade": { mode: "game", label: "musicGameArcade", bpm: 132, wave: "square", melody: [72, 79, null, 76, 84, null, 79, null, 74, 81, null, 77, 86, null, 81, null], bass: [36, null, 43, null, 36, null, 48, null, 34, null, 41, null, 34, null, 46, null] }
+    };
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch (error) { console.warn("Could not load saved progress.", error); }
+    const savedCustomWords = Array.isArray(saved.customWords) ? saved.customWords.filter((item, index, items) =>
+      item && typeof item.id === "string" && item.id.startsWith("custom-") &&
+      typeof item.word === "string" && /^[a-z][a-z'-]*$/i.test(item.word.trim()) && item.word.length <= 60 &&
+      typeof item.pos === "string" && item.pos.trim().length > 0 && item.pos.length <= 50 &&
+      typeof item.ipa === "string" && item.ipa.length <= 80 &&
+      typeof item.en === "string" && item.en.trim().length > 0 && item.en.length <= 500 &&
+      typeof item.zh === "string" && item.zh.trim().length > 0 && item.zh.length <= 500 &&
+      !items.slice(0, index).some(previous => previous.id === item.id)
+    ).map(item => ({ ...item, word: item.word.trim(), pos: item.pos.trim(), en: item.en.trim(), zh: item.zh.trim() })) : [];
+    WORDS.push(...savedCustomWords);
+    function localDateKey(date = new Date()) {
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    }
+    const state = {
+      lang: saved.lang === "zh" ? "zh" : "en",
+      sound: saved.sound !== false,
+      speechGeneration: 0,
+      speechActive: false,
+      musicVolume: Number.isFinite(saved.musicVolume) ? Math.max(0, Math.min(100, saved.musicVolume)) : 100,
+      voiceURI: saved.voiceURI || "",
+      musicCalm: MUSIC_TRACKS[saved.musicCalm]?.mode === "calm" ? saved.musicCalm : "",
+      musicGame: MUSIC_TRACKS[saved.musicGame] ? saved.musicGame : "game-disco",
+      wrong: Array.isArray(saved.wrong)
+        ? saved.wrong.filter(entry => entry && WORDS.some(item => idOf(item) === entry.word || item.word === entry.word))
+        : [],
+      customDefinitions: saved.customDefinitions && typeof saved.customDefinitions === "object" && !Array.isArray(saved.customDefinitions)
+        ? Object.fromEntries(Object.entries(saved.customDefinitions).filter(([key, value]) =>
+          WORDS.some(item => idOf(item) === key) && value && typeof value.en === "string" && typeof value.zh === "string"))
+        : {},
+      customWords: savedCustomWords,
+      vocabOverrides: saved.vocabOverrides && typeof saved.vocabOverrides === "object" && !Array.isArray(saved.vocabOverrides) ? saved.vocabOverrides : {},
+      deletedWords: saved.deletedWords && typeof saved.deletedWords === "object" && !Array.isArray(saved.deletedWords) ? saved.deletedWords : {},
+      notebooks: saved.notebooks && typeof saved.notebooks === "object" ? saved.notebooks : {},
+      notebookMode: "personal",
+      gamePlaysDate: localDateKey(),
+      gamePlaysToday: saved.gamePlaysDate === localDateKey() && Number.isInteger(saved.gamePlaysToday)
+        ? Math.max(0, Math.min(3, saved.gamePlaysToday))
+        : 0,
+      lastScore: Number.isFinite(saved.lastScore) ? saved.lastScore : null,
+      tab: "quiz", quiz: null, challenge: null, wordFilter: "all", search: "",
+      speakIndex: "fascinated", mic: null, recognition: null, voices: [], game: null,
+      gameAccessMs: Number.isFinite(saved.gameAccessMs) ? Math.max(0, saved.gameAccessMs) : 0,
+      gameDeadline: Number.isFinite(saved.gameDeadline) ? saved.gameDeadline : null
+    };
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+    const t = (key, vars = {}) => Object.entries(vars).reduce((text, [name, value]) => text.replaceAll(`{${name}}`, value), TEXT[state.lang][key] || key);
+    const escapeHTML = (value) => String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+    function setCloudStatus(key, detail = "") {
+      cloudStatusKey = key;
+      cloudStatusDetail = detail;
+      const status = $("#cloudStatus");
+      if (status) status.textContent = t(key, { error: detail });
+      const loader = $("#cloudLoader");
+      if (loader) loader.hidden = key !== "cloudConnecting";
+    }
+    async function supabaseRequest(path, { method = "GET", body, prefer = "" } = {}) {
+      if (!SUPABASE_PUBLISHABLE_KEY) throw new Error("The Supabase publishable key is not configured.");
+      const response = await fetch(`${SUPABASE_REST_URL}${path}`, {
+        method,
+        headers: {
+          apikey: SUPABASE_PUBLISHABLE_KEY,
+          Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+          Accept: "application/json",
+          ...(body ? { "Content-Type": "application/json" } : {}),
+          ...(prefer ? { Prefer: prefer } : {})
+        },
+        ...(body ? { body: JSON.stringify(body) } : {}),
+        signal: AbortSignal.timeout(12000)
+      });
+      if (!response.ok) {
+        const detail = (await response.text()).slice(0, 300);
+        throw new Error(`Supabase ${method} failed (${response.status})${detail ? `: ${detail}` : ""}`);
+      }
+      return response.status === 204 || prefer.includes("return=minimal") ? null : response.json();
+    }
+    function validSharedNotebook(row) {
+      return row && row.id === "class" && typeof row.content === "string" && row.content.length <= 100000 &&
+        typeof row.drawing === "string" && row.drawing.length <= 4000000 &&
+        (!row.drawing || row.drawing.startsWith("data:image/png;base64,"));
+    }
+    function sharedVocabularyEntry(entry) {
+      return { id: idOf(entry), word: entry.word, pos: entry.pos, ipa: entry.ipa || "", en: entry.en, zh: entry.zh, is_deleted: false };
+    }
+    function validSharedVocabularyEntry(entry) {
+      return entry && typeof entry.id === "string" && entry.id.length <= 130 &&
+        typeof entry.word === "string" && /^[a-z][a-z'-]*$/i.test(entry.word) && entry.word.length <= 60 &&
+        typeof entry.pos === "string" && entry.pos.trim().length > 0 && entry.pos.length <= 50 &&
+        typeof entry.ipa === "string" && entry.ipa.length <= 80 &&
+        typeof entry.en === "string" && entry.en.trim().length > 0 && entry.en.length <= 500 &&
+        typeof entry.zh === "string" && entry.zh.trim().length > 0 && entry.zh.length <= 500 &&
+        typeof entry.is_deleted === "boolean" &&
+        (entry.id.startsWith("custom-") ? /^custom-[A-Za-z0-9-]+$/.test(entry.id) : ORIGINAL_WORDS.has(entry.id));
+    }
+    function localSharedVocabularyEntries() {
+      const entries = new Map(state.customWords.map(entry => [idOf(entry), sharedVocabularyEntry(entry)]));
+      for (const [id, entry] of Object.entries(state.vocabOverrides)) entries.set(id, { ...entry, id, is_deleted: false });
+      for (const [id, definition] of Object.entries(state.customDefinitions)) {
+        const entry = wordByName(id);
+        if (!entry) continue;
+        const current = entries.get(id) || sharedVocabularyEntry(entry);
+        entries.set(id, { ...current, en: definition.en, zh: definition.zh, is_deleted: false });
+      }
+      for (const [id, entry] of Object.entries(state.deletedWords)) entries.set(id, { ...entry, id, is_deleted: true });
+      return [...entries.values()];
+    }
+    function applySharedVocabularyEntry(entry) {
+      const existing = wordByName(entry.id);
+      if (entry.is_deleted) {
+        state.deletedWords[entry.id] = { ...entry };
+        state.customWords = state.customWords.filter(item => idOf(item) !== entry.id);
+        delete state.customDefinitions[entry.id];
+        delete state.vocabOverrides[entry.id];
+        WORDS = WORDS.filter(item => idOf(item) !== entry.id);
+        return;
+      }
+      delete state.deletedWords[entry.id];
+      if (entry.id.startsWith("custom-")) {
+        const shared = { ...entry };
+        if (existing) Object.assign(existing, shared);
+        else {
+          WORDS.push(shared);
+          state.customWords.push(shared);
+        }
+        state.customDefinitions[entry.id] = { en: entry.en, zh: entry.zh };
+        const savedWordIndex = state.customWords.findIndex(item => idOf(item) === entry.id);
+        if (savedWordIndex >= 0) state.customWords[savedWordIndex] = shared;
+        return;
+      }
+      if (existing) {
+        existing.id = entry.id;
+        Object.assign(existing, { word: entry.word, pos: entry.pos, ipa: entry.ipa, en: entry.en, zh: entry.zh });
+        state.vocabOverrides[entry.id] = { ...entry };
+        state.customDefinitions[entry.id] = { en: entry.en, zh: entry.zh };
+      }
+    }
+    async function publishSharedVocabularyEntry(entry) {
+      if (!cloudReady) return;
+      try {
+        await supabaseRequest("vocab_entries?on_conflict=id", {
+          method: "POST",
+          body: [{ ...entry, is_deleted: Boolean(entry.is_deleted) }],
+          prefer: "resolution=merge-duplicates,return=minimal"
+        });
+        setCloudStatus("cloudConnected");
+      } catch (error) {
+        console.error("Could not publish the vocabulary entry to Supabase.", error);
+        setCloudStatus("cloudFailed", error.message);
+      }
+    }
+    async function loadSharedVocabulary() {
+      const rows = await supabaseRequest("vocab_entries?select=id,word,pos,ipa,en,zh,is_deleted&order=id.asc&limit=1000");
+      if (!Array.isArray(rows)) throw new Error("Supabase returned an invalid vocabulary response.");
+      for (const [id, row] of Object.entries(state.vocabOverrides)) {
+        if (validSharedVocabularyEntry({ ...row, id, is_deleted: false })) applySharedVocabularyEntry({ ...row, id, is_deleted: false });
+        else delete state.vocabOverrides[id];
+      }
+      for (const [id, row] of Object.entries(state.deletedWords)) {
+        if (validSharedVocabularyEntry({ ...row, id, is_deleted: true })) applySharedVocabularyEntry({ ...row, id, is_deleted: true });
+        else delete state.deletedWords[id];
+      }
+      const before = JSON.stringify({ words: WORDS, customWords: state.customWords, overrides: state.vocabOverrides, deleted: state.deletedWords });
+      const remote = new Map();
+      for (const row of rows) {
+        if (validSharedVocabularyEntry(row)) remote.set(row.id, row);
+        else console.warn("Ignored an invalid shared vocabulary entry from Supabase.", row?.id);
+      }
+      for (const row of remote.values()) applySharedVocabularyEntry(row);
+      const missing = localSharedVocabularyEntries().filter(entry => !remote.has(entry.id));
+      if (missing.length) {
+        await supabaseRequest("vocab_entries?on_conflict=id", {
+          method: "POST",
+          body: missing,
+          prefer: "resolution=merge-duplicates,return=minimal"
+        });
+      }
+      return before !== JSON.stringify({ words: WORDS, customWords: state.customWords, overrides: state.vocabOverrides, deleted: state.deletedWords });
+    }
+    async function loadSharedNotebook() {
+      const rows = await supabaseRequest("class_notebook?select=id,content,drawing,updated_at&id=eq.class&limit=1");
+      if (!Array.isArray(rows)) throw new Error("Supabase returned an invalid notebook response.");
+      const row = rows[0];
+      if (validSharedNotebook(row)) {
+        state.notebooks.class = { content: sanitizeNotebookHtml(row.content), drawing: row.drawing };
+        lastNotebookUpdatedAt = row.updated_at || "";
+      } else if (row) {
+        throw new Error("Supabase returned invalid class notebook content.");
+      } else {
+        const local = state.notebooks.class || {};
+        if (local.content || local.drawing) await publishSharedNotebook(local);
+      }
+    }
+    async function publishSharedNotebook(page) {
+      if (!cloudReady && !SUPABASE_PUBLISHABLE_KEY) return;
+      const content = sanitizeNotebookHtml(page.content || "");
+      const drawing = typeof page.drawing === "string" && page.drawing.startsWith("data:image/png;base64,") &&
+        page.drawing.length <= 4000000 ? page.drawing : "";
+      const updatedAt = new Date().toISOString();
+      await supabaseRequest("class_notebook?on_conflict=id", {
+        method: "POST",
+        body: [{ id: "class", content, drawing, updated_at: updatedAt }],
+        prefer: "resolution=merge-duplicates,return=minimal"
+      });
+      lastNotebookUpdatedAt = updatedAt;
+      if (JSON.stringify(state.notebooks.class) === JSON.stringify(page)) classNotebookDirty = false;
+      setCloudStatus("cloudConnected");
+    }
+    function scheduleSharedNotebookSave() {
+      classNotebookDirty = true;
+      if (!cloudReady) return;
+      window.clearTimeout(sharedNotebookSaveTimer);
+      sharedNotebookSaveTimer = window.setTimeout(() => {
+        publishSharedNotebook(state.notebooks.class || {}).catch(error => {
+          console.error("Could not publish the class notebook to Supabase.", error);
+          setCloudStatus("cloudFailed", error.message);
+        });
+      }, 700);
+    }
+    let sharedNotebookSaveTimer = 0;
+    async function refreshSharedContent() {
+      const vocabularyChanged = await loadSharedVocabulary();
+      if (vocabularyChanged) {
+        state.quiz = null;
+        state.challenge = null;
+        if (state.game?.timer) window.clearInterval(state.game.timer);
+        state.game = null;
+        updateStats();
+        if (state.tab === "vocab" || state.tab === "editor") renderTab(state.tab);
+      }
+      const rows = await supabaseRequest("class_notebook?select=id,content,drawing,updated_at&id=eq.class&limit=1");
+      const row = Array.isArray(rows) ? rows[0] : null;
+      if (!validSharedNotebook(row) || !row.updated_at || row.updated_at === lastNotebookUpdatedAt || classNotebookDirty) return;
+      state.notebooks.class = { content: sanitizeNotebookHtml(row.content), drawing: row.drawing };
+      lastNotebookUpdatedAt = row.updated_at;
+      persist();
+      if (state.tab === "notebook" && state.notebookMode === "class") renderNotebook();
+    }
+    async function initializeCloud() {
+      if (!SUPABASE_PUBLISHABLE_KEY) {
+        setCloudStatus("cloudMissing");
+        return;
+      }
+      setCloudStatus("cloudConnecting");
+      try {
+        await loadSharedVocabulary();
+        await loadSharedNotebook();
+        cloudReady = true;
+        classNotebookDirty = false;
+        setCloudStatus("cloudConnected");
+        window.setInterval(() => {
+          refreshSharedContent().catch(error => {
+            console.error("Could not refresh shared Supabase content.", error);
+            setCloudStatus("cloudFailed", error.message);
+          });
+        }, 15000);
+      } catch (error) {
+        console.error("Could not initialize Supabase sharing.", error);
+        setCloudStatus("cloudFailed", error.message);
+      }
+    }
+    function persist() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          lang: state.lang, sound: state.sound, voiceURI: state.voiceURI,
+          musicCalm: state.musicCalm, musicGame: state.musicGame,
+          musicVolume: state.musicVolume,
+          wrong: state.wrong, lastScore: state.lastScore, customDefinitions: state.customDefinitions,
+          customWords: state.customWords, vocabOverrides: state.vocabOverrides, deletedWords: state.deletedWords, notebooks: state.notebooks,
+          gamePlaysDate: state.gamePlaysDate, gamePlaysToday: state.gamePlaysToday,
+          gameAccessMs: state.gameAccessMs, gameDeadline: state.gameDeadline
+        }));
+      } catch (error) { console.warn("Could not save study progress.", error); }
+    }
+    let musicContext = null, musicMaster = null, musicTimer = null, musicStep = 0, musicGeneration = 0, activeMusicTrack = "";
+    function gameMusicUnlocked() {
+      return state.tab === "game" && gameTimeRemaining() > 0;
+    }
+    function updateMusicControl() {
+      const select = $("#musicSelect");
+      if (!select) return;
+      const gameMode = state.tab === "game" && gameMusicUnlocked();
+      const options = [`<option value="">${t("musicOff")}</option>`];
+      const calmOptions = Object.entries(MUSIC_TRACKS)
+        .filter(([, track]) => track.mode === "calm")
+        .map(([key, track]) => `<option value="${key}">${t(track.label)}</option>`).join("");
+      options.push(`<optgroup label="${t("musicPractice")}">${calmOptions}</optgroup>`);
+      if (gameMode) {
+        const gameOptions = Object.entries(MUSIC_TRACKS)
+          .filter(([, track]) => track.mode === "game")
+          .map(([key, track]) => `<option value="${key}">${t(track.label)}</option>`).join("");
+        options.push(`<optgroup label="${t("musicGame")}">${gameOptions}</optgroup>`);
+      }
+      select.innerHTML = options.join("");
+      const selected = gameMode ? state.musicGame : state.musicCalm;
+      select.value = selected && select.querySelector(`option[value="${selected}"]`) ? selected : "";
+      select.setAttribute("aria-label", `${t("musicPractice")}${gameMode ? ` / ${t("musicGame")}` : ""}`);
+      $("#musicVolume").value = state.musicVolume;
+      $("#musicVolume").setAttribute("aria-label", t("musicVolume"));
+      $("#musicVolumeValue").value = `${state.musicVolume}%`;
+    }
+    function musicBaseGain() {
+      return MUSIC_TRACKS[activeMusicTrack]?.mode === "game" ? 0.30 : 0.24;
+    }
+    function updateMusicGain() {
+      if (!musicContext || !musicMaster || musicContext.state === "closed") return;
+      const volume = musicBaseGain() * state.musicVolume / 100;
+      musicMaster.gain.setTargetAtTime(state.speechActive ? volume * 0.2 : volume, musicContext.currentTime, 0.12);
+    }
+    function playMusicTone(note, duration, wave, volume, startTime = musicContext.currentTime) {
+      if (!musicContext || !musicMaster || note === null) return;
+      const oscillator = musicContext.createOscillator();
+      const envelope = musicContext.createGain();
+      oscillator.type = wave;
+      oscillator.frequency.setValueAtTime(440 * 2 ** ((note - 69) / 12), startTime);
+      envelope.gain.setValueAtTime(0.0001, startTime);
+      envelope.gain.exponentialRampToValueAtTime(Math.max(0.0002, volume), startTime + 0.018);
+      envelope.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+      oscillator.connect(envelope);
+      envelope.connect(musicMaster);
+      oscillator.start(startTime);
+      oscillator.stop(startTime + duration + 0.02);
+    }
+    function playMusicKick(startTime) {
+      if (!musicContext || !musicMaster) return;
+      const oscillator = musicContext.createOscillator();
+      const envelope = musicContext.createGain();
+      oscillator.type = "sine";
+      oscillator.frequency.setValueAtTime(125, startTime);
+      oscillator.frequency.exponentialRampToValueAtTime(48, startTime + 0.12);
+      envelope.gain.setValueAtTime(0.08, startTime);
+      envelope.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.15);
+      oscillator.connect(envelope);
+      envelope.connect(musicMaster);
+      oscillator.start(startTime);
+      oscillator.stop(startTime + 0.17);
+    }
+    function scheduleMusicStep(generation) {
+      if (generation !== musicGeneration || !musicContext || !activeMusicTrack) return;
+      const track = MUSIC_TRACKS[activeMusicTrack];
+      if (!track || (track.mode === "game" && !gameMusicUnlocked())) {
+        updateMusicControl();
+        applyMusicForTab();
+        return;
+      }
+      const step = musicStep++ % track.melody.length;
+      const now = musicContext.currentTime + 0.025;
+      const eighth = 60 / track.bpm / 2;
+      if (track.mode === "calm") {
+        if (step % 8 === 0) track.chords.forEach((note, index) =>
+          playMusicTone(note + (index === 2 ? 12 : 0), eighth * 7.5, "sine", 0.024, now));
+        if (track.melody[step] !== null) playMusicTone(track.melody[step], eighth * 1.75, track.wave, 0.07, now);
+      } else {
+        if (step % 2 === 0) playMusicKick(now);
+        if (step % 2 === 1) playMusicTone(88, eighth * 0.23, "sine", 0.018, now);
+        if (track.bass[step] !== null) playMusicTone(track.bass[step], eighth * 0.9, "triangle", 0.075, now);
+        if (track.melody[step] !== null) playMusicTone(track.melody[step], eighth * 0.82, track.wave, 0.048, now);
+      }
+      musicTimer = window.setTimeout(() => scheduleMusicStep(generation), eighth * 1000);
+    }
+    function duckMusic(ducked) {
+      if (!musicContext || !musicMaster || musicContext.state === "closed") return;
+      state.speechActive = ducked;
+      updateMusicGain();
+    }
+    function stopMusic() {
+      musicGeneration++;
+      if (musicTimer) window.clearTimeout(musicTimer);
+      musicTimer = null;
+      activeMusicTrack = "";
+      const context = musicContext;
+      musicContext = null;
+      musicMaster = null;
+      if (context && context.state !== "closed") {
+        context.close().catch(error => console.error("Could not close background music audio.", error));
+      }
+    }
+    async function startMusic(trackId) {
+      const track = MUSIC_TRACKS[trackId];
+      if (!track || (track.mode === "game" && !gameMusicUnlocked())) { stopMusic(); return; }
+      if (activeMusicTrack === trackId && musicTimer) return;
+      stopMusic();
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) { toast(t("musicUnavailable")); return; }
+      let context;
+      try {
+        context = new AudioContextClass();
+        musicContext = context;
+        musicMaster = musicContext.createGain();
+        musicMaster.gain.setValueAtTime((track.mode === "game" ? 0.30 : 0.24) * state.musicVolume / 100, musicContext.currentTime);
+        musicMaster.connect(musicContext.destination);
+        await context.resume();
+        if (musicContext !== context) return;
+        activeMusicTrack = trackId;
+        musicStep = 0;
+        scheduleMusicStep(++musicGeneration);
+      } catch (error) {
+        if (musicContext === context) stopMusic();
+        console.error("Could not start background music.", error);
+        toast(t("musicUnavailable"));
+      }
+    }
+    function applyMusicForTab() {
+      const trackId = state.tab === "game" && gameMusicUnlocked() ? state.musicGame : state.musicCalm;
+      if (trackId) void startMusic(trackId);
+      else stopMusic();
+    }
+    function onMusicSelection(event) {
+      const trackId = event.target.value;
+      const inGame = state.tab === "game" && gameMusicUnlocked();
+      if (inGame) state.musicGame = trackId;
+      else state.musicCalm = trackId;
+      persist();
+      void publishSharedVocabularyEntry(entry);
+      updateMusicControl();
+      applyMusicForTab();
+    }
+    function toast(message) {
+      const region = $("#toastRegion");
+      region.innerHTML = `<div class="toast" role="status">${escapeHTML(message)}</div>`;
+      window.setTimeout(() => { region.innerHTML = ""; }, 2600);
+    }
+    function speak(text, lang = "en-US", continueQueue = false) {
+      if (!state.sound || !("speechSynthesis" in window)) return;
+      if (!continueQueue) {
+        window.speechSynthesis.cancel();
+        state.speechGeneration++;
+      }
+      const generation = state.speechGeneration;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang;
+      utterance.rate = 0.88;
+      const voice = state.voices.find(item => item.voiceURI === state.voiceURI);
+      if (voice && (voice.lang.toLowerCase().startsWith(lang.slice(0, 2).toLowerCase()))) utterance.voice = voice;
+      duckMusic(true);
+      utterance.onend = utterance.onerror = () => {
+        if (generation === state.speechGeneration && !window.speechSynthesis.speaking && !window.speechSynthesis.pending) duckMusic(false);
+      };
+      window.speechSynthesis.speak(utterance);
+    }
+    function speakWord(word) { speak(word, "en-US"); }
+    function speakDefinition(word) {
+      const item = wordByName(word);
+      if (!item) return;
+      speak(`${item.word}. ${definitionFor(item, "en")}`, "en-US");
+      if (state.lang === "zh") speak(definitionFor(item, "zh"), "zh-CN", true);
+    }
+    function idOf(item) { return item.id || item.word; }
+    function wordByName(key) { return WORDS.find(item => idOf(item) === key || item.word === key); }
+    function definitionFor(item, language = state.lang) {
+      const custom = state.customDefinitions[idOf(item)];
+      return custom?.[language] || item[language];
+    }
+    function updateDailyDefinition() {
+      const courage = WORDS.find(item => item.word === "courage");
+      const dailyDefinition = $(".daily-def");
+      if (courage && dailyDefinition) dailyDefinition.textContent = definitionFor(courage);
+    }
+    function syncGamePlayDay() {
+      const today = localDateKey();
+      if (state.gamePlaysDate === today) return;
+      state.gamePlaysDate = today;
+      state.gamePlaysToday = 0;
+      persist();
+    }
+    function renderEditor() {
+      const root = $("#editorPanel");
+      const selectedId = $("#editorWord")?.value || idOf(WORDS[0]);
+      const item = wordByName(selectedId) || WORDS[0];
+      root.innerHTML = `<div class="panel-heading"><div><h2>${t("editorTitle")}</h2><p>${t("editorSub")}</p></div></div>
+        <form class="card editor-card" id="definitionEditor">
+          <label for="editorWord">${t("editorWord")}</label>
+          <select class="search" id="editorWord">${WORDS.map(entry =>
+            `<option value="${escapeHTML(idOf(entry))}" ${idOf(entry) === idOf(item) ? "selected" : ""}>${escapeHTML(entry.word)} — ${escapeHTML(entry.pos)}</option>`
+          ).join("")}</select>
+          <div class="editor-fields">
+            <label for="editorSpelling">${t("editorSpelling")}
+              <input class="search" id="editorSpelling" maxlength="60" required pattern="[A-Za-z][A-Za-z'\\-]*" value="${escapeHTML(item.word)}">
+            </label>
+            <label for="editorPartOfSpeech">${t("editorPartOfSpeech")}
+              <input class="search" id="editorPartOfSpeech" maxlength="50" required value="${escapeHTML(item.pos)}">
+            </label>
+            <label for="editorEnglish">${t("editorEnglish")}
+              <textarea class="search" id="editorEnglish" maxlength="500" required>${escapeHTML(definitionFor(item, "en"))}</textarea>
+            </label>
+            <label for="editorChinese">${t("editorChinese")}
+              <textarea class="search" id="editorChinese" maxlength="500" required>${escapeHTML(definitionFor(item, "zh"))}</textarea>
+            </label>
+          </div>
+          <div class="editor-actions"><button class="primary" type="submit">${t("editorSave")}</button>
+            ${ORIGINAL_WORDS.has(idOf(item)) ? `<button class="secondary" type="button" id="resetDefinition">${t("editorReset")}</button>` : ""}
+            <button class="danger-button" type="button" id="deleteVocabWord">${t("editorDelete")}</button></div>
+        </form>`;
+      root.insertAdjacentHTML("beforeend", `<p class="editor-note">${t("editorSyncNote")}</p>
+        <form class="card editor-card" id="addVocabForm">
+          <h3>${t("editorCreateTitle")}</h3>
+          <div class="editor-fields">
+            <label for="newWord">${t("editorWordName")}<input class="search" id="newWord" maxlength="60" required pattern="[A-Za-z][A-Za-z'\\-]*"></label>
+            <label for="newPos">${t("editorPartOfSpeech")}<input class="search" id="newPos" maxlength="50" required></label>
+            <label for="newIpa">${t("editorPronunciation")}<input class="search" id="newIpa" maxlength="80"></label>
+            <label for="newEnglish">${t("editorEnglish")}<textarea class="search" id="newEnglish" maxlength="500" required></textarea></label>
+            <label for="newChinese">${t("editorChinese")}<textarea class="search" id="newChinese" maxlength="500" required></textarea></label>
+          </div>
+          <button class="primary" type="submit">${t("editorCreate")}</button>
+        </form>`);
+      $("#editorWord").addEventListener("change", () => renderEditor());
+      $("#definitionEditor").addEventListener("submit", event => {
+        event.preventDefault();
+        const itemId = idOf(item);
+        const word = $("#editorSpelling").value.trim();
+        const pos = $("#editorPartOfSpeech").value.trim();
+        const en = $("#editorEnglish").value.trim();
+        const zh = $("#editorChinese").value.trim();
+        if (!word || !pos || !en || !zh) { toast(t("editorRequired")); return; }
+        if (!/^[a-z][a-z'-]*$/i.test(word)) { toast(t("editorInvalidWord")); return; }
+        if (word.length > 60 || pos.length > 50 || en.length > 500 || zh.length > 500) { toast(t("editorTooLong")); return; }
+        if (WORDS.some(entry => idOf(entry) !== itemId && entry.word.toLowerCase() === word.toLowerCase() && entry.pos.toLowerCase() === pos.toLowerCase())) {
+          toast(t("editorDuplicate")); return;
+        }
+        item.id = itemId;
+        Object.assign(item, { word, pos, en, zh });
+        state.customDefinitions[itemId] = { en, zh };
+        if (itemId.startsWith("custom-")) {
+          const customIndex = state.customWords.findIndex(entry => idOf(entry) === itemId);
+          if (customIndex >= 0) state.customWords[customIndex] = item;
+        } else {
+          state.vocabOverrides[itemId] = { ...sharedVocabularyEntry(item), is_deleted: false };
+        }
+        persist();
+        void publishSharedVocabularyEntry({ ...sharedVocabularyEntry(item), is_deleted: false });
+        renderEditor();
+        renderVocab();
+        updateDailyDefinition();
+        toast(t("editorSaved"));
+      });
+      $("#resetDefinition")?.addEventListener("click", () => {
+        const itemId = idOf(item);
+        const original = ORIGINAL_WORDS.get(itemId);
+        if (!original) return;
+        Object.assign(item, original);
+        state.customDefinitions[itemId] = { en: original.en, zh: original.zh };
+        delete state.vocabOverrides[itemId];
+        persist();
+        void publishSharedVocabularyEntry({ ...sharedVocabularyEntry(item), is_deleted: false });
+        renderEditor();
+        renderVocab();
+        updateDailyDefinition();
+        toast(t("editorResetDone"));
+      });
+      $("#deleteVocabWord").addEventListener("click", () => {
+        const itemId = idOf(item);
+        if (WORDS.length <= 1) { toast(t("editorLastWord")); return; }
+        if (!window.confirm(t("editorDeleteConfirm", { word: item.word }))) return;
+        const deletedEntry = { ...sharedVocabularyEntry(item), id: itemId, is_deleted: true };
+        state.deletedWords[itemId] = deletedEntry;
+        state.customWords = state.customWords.filter(entry => idOf(entry) !== itemId);
+        delete state.customDefinitions[itemId];
+        delete state.vocabOverrides[itemId];
+        WORDS = WORDS.filter(entry => idOf(entry) !== itemId);
+        state.wrong = state.wrong.filter(entry => entry.word !== itemId && entry.answer !== itemId);
+        state.quiz = null;
+        state.challenge = null;
+        if (state.game?.timer) window.clearInterval(state.game.timer);
+        state.game = null;
+        persist();
+        void publishSharedVocabularyEntry(deletedEntry);
+        updateStats();
+        updateDailyDefinition();
+        renderVocab();
+        renderEditor();
+        toast(t("editorDeleted"));
+      });
+      $("#addVocabForm").addEventListener("submit", event => {
+        event.preventDefault();
+        const word = $("#newWord").value.trim();
+        const pos = $("#newPos").value.trim();
+        const ipa = $("#newIpa").value.trim();
+        const en = $("#newEnglish").value.trim();
+        const zh = $("#newChinese").value.trim();
+        if (!word || !pos || !en || !zh) { toast(t("editorRequired")); return; }
+        if (!/^[a-z][a-z'-]*$/i.test(word)) { toast(t("editorInvalidWord")); return; }
+        if (word.length > 60 || pos.length > 50 || ipa.length > 80 || en.length > 500 || zh.length > 500) {
+          toast(t("editorTooLong")); return;
+        }
+        if (WORDS.some(entry => entry.word.toLowerCase() === word.toLowerCase() && entry.pos.toLowerCase() === pos.toLowerCase())) {
+          toast(t("editorDuplicate")); return;
+        }
+        const suffix = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+        const entry = { id: `custom-${suffix}`, word, pos, ipa, en, zh };
+        WORDS.push(entry);
+        state.customWords.push(entry);
+        state.quiz = null;
+        state.challenge = null;
+        if (state.game?.timer) window.clearInterval(state.game.timer);
+        state.game = null;
+        persist();
+        updateStats();
+        renderVocab();
+        renderEditor();
+        toast(t("editorAdded"));
+      });
+    }
+    function sanitizeNotebookHtml(html) {
+      const allowedTags = new Set(["P", "DIV", "BR", "B", "STRONG", "I", "EM", "U", "S", "MARK", "SPAN", "FONT", "UL", "OL", "LI", "H1", "H2", "H3", "BLOCKQUOTE"]);
+      const template = document.createElement("template");
+      template.innerHTML = String(html || "").slice(0, 100000);
+      function clean(parent) {
+        for (const node of [...parent.childNodes]) {
+          if (node.nodeType !== Node.ELEMENT_NODE) {
+            if (node.nodeType !== Node.TEXT_NODE) node.remove();
+            continue;
+          }
+          if (!allowedTags.has(node.tagName)) {
+            if (["SCRIPT", "STYLE", "IFRAME", "OBJECT", "SVG", "MATH"].includes(node.tagName)) node.remove();
+            else { clean(node); node.replaceWith(...node.childNodes); }
+            continue;
+          }
+          const tag = node.tagName;
+          const face = tag === "FONT" && ["Arial", "Georgia", "Verdana", "Courier New"].includes(node.getAttribute("face")) ? node.getAttribute("face") : "";
+          const colors = {};
+          const style = node.getAttribute("style") || "";
+          if (tag === "SPAN") {
+            for (const [property, value] of style.split(";").map(part => part.split(":").map(piece => piece.trim()))) {
+              if (["color", "background-color"].includes(property) && value && CSS.supports(property, value)) colors[property] = value;
+            }
+          }
+          const color = tag === "FONT" && CSS.supports("color", node.getAttribute("color") || "") ? node.getAttribute("color") : "";
+          for (const attribute of [...node.attributes]) node.removeAttribute(attribute.name);
+          if (face) node.setAttribute("face", face);
+          if (color) node.setAttribute("color", color);
+          if (Object.keys(colors).length) node.setAttribute("style", Object.entries(colors).map(([key, value]) => `${key}: ${value}`).join("; "));
+          clean(node);
+        }
+      }
+      clean(template.content);
+      return template.innerHTML;
+    }
+    let notebookSaveTimer = 0;
+    function saveNotebookPage(editor, canvas, mode) {
+      state.notebooks[mode] = {
+        content: sanitizeNotebookHtml(editor.innerHTML),
+        drawing: canvas.dataset.drawing || ""
+      };
+      window.clearTimeout(notebookSaveTimer);
+      notebookSaveTimer = window.setTimeout(() => {
+        persist();
+        if (mode === "class") scheduleSharedNotebookSave();
+      }, 250);
+    }
+    function renderNotebook() {
+      const root = $("#notebookPanel");
+      const mode = state.notebookMode === "class" ? "class" : "personal";
+      state.notebookMode = mode;
+      const page = state.notebooks[mode] || {};
+      const personal = mode === "personal";
+      root.innerHTML = `<div class="panel-heading"><div><h2>${t("notebookTitle")}</h2><p>${t("notebookSub")}</p></div></div>
+        <div class="notebook-tabs" role="tablist" aria-label="${escapeHTML(t("notebookTitle"))}"><button class="secondary ${personal ? "active" : ""}" data-notebook="personal" role="tab" aria-selected="${personal}">${t("personalNotebook")}</button>
+          <button class="secondary ${!personal ? "active" : ""}" data-notebook="class" role="tab" aria-selected="${!personal}">${t("classNotebook")}</button></div>
+        <p class="notebook-notice">${t(personal ? "personalNotebookNote" : "classNotebookNote")}</p>
+        <section class="card notebook-card">
+          <div class="notebook-toolbar notebook-format-toolbar" role="toolbar" aria-label="${escapeHTML(t("notebookTitle"))}">
+            <div class="notebook-tool-group notebook-format-actions">
+              <button class="soft-button" data-command="bold"><strong>${t("notebookBold")}</strong></button>
+              <button class="soft-button" data-command="italic"><em>${t("notebookItalic")}</em></button>
+              <button class="secondary" id="clearNotebook">${t("notebookClearPage")}</button>
+            </div>
+            <label class="notebook-control">${t("notebookFont")}<select id="notebookFont">
+              <option value="Arial">Arial</option><option value="Georgia">Georgia</option><option value="Verdana">Verdana</option><option value="Courier New">Courier New</option>
+            </select></label>
+            <div class="notebook-tool-group notebook-color-tools">
+              <label class="notebook-control">${t("notebookTextColor")}<input type="color" id="notebookTextColor" value="#252722"></label>
+              <label class="notebook-control">${t("notebookHighlightColor")}<input type="color" id="notebookHighlightColor" value="#fff08a"></label>
+              <button class="soft-button" data-command="highlight">${t("notebookHighlight")}</button>
+            </div>
+          </div>
+          <div class="notebook-editor" id="notebookEditor" contenteditable="true" role="textbox" aria-multiline="true"
+            data-placeholder="${escapeHTML(t("notebookPlaceholder"))}">${sanitizeNotebookHtml(page.content)}</div>
+          <div class="notebook-drawing">
+            <div class="notebook-drawing-head"><strong>${t("notebookDraw")}</strong>
+              <button class="secondary" id="clearNotebookDrawing">${t("notebookClearDrawing")}</button>
+            </div>
+            <div class="notebook-drawing-tools">
+              <label class="notebook-control">${t("notebookPen")}<input type="color" id="notebookPenColor" value="#24543f"></label>
+              <label class="notebook-control">${t("notebookThickness")}<input type="range" id="notebookPenSize" min="1" max="24" value="4"></label>
+            </div>
+            <canvas class="notebook-canvas" id="notebookCanvas" width="1100" height="300" aria-label="${escapeHTML(t("notebookDraw"))}"></canvas>
+          </div>
+        </section>`;
+      $$(".notebook-tabs [data-notebook]", root).forEach(button => button.addEventListener("click", () => {
+        state.notebookMode = button.dataset.notebook;
+        renderNotebook();
+      }));
+      const editor = $("#notebookEditor");
+      const canvas = $("#notebookCanvas");
+      if (page.drawing?.startsWith("data:image/png;base64,")) {
+        canvas.dataset.drawing = page.drawing;
+        const image = new Image();
+        image.onload = () => canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
+        image.onerror = () => console.warn("Could not restore the saved notebook drawing.");
+        image.src = page.drawing;
+      }
+      editor.addEventListener("input", () => saveNotebookPage(editor, canvas, mode));
+      root.querySelectorAll("[data-command]").forEach(button => {
+        button.addEventListener("mousedown", event => event.preventDefault());
+        button.addEventListener("click", () => {
+          editor.focus();
+          if (button.dataset.command === "bold") document.execCommand("bold");
+          else if (button.dataset.command === "italic") document.execCommand("italic");
+          else document.execCommand("hiliteColor", false, $("#notebookHighlightColor").value);
+          saveNotebookPage(editor, canvas, mode);
+        });
+      });
+      $("#notebookFont").addEventListener("change", event => {
+        editor.focus();
+        document.execCommand("fontName", false, event.target.value);
+        saveNotebookPage(editor, canvas, mode);
+      });
+      $("#notebookTextColor").addEventListener("input", event => {
+        editor.focus();
+        document.execCommand("foreColor", false, event.target.value);
+        saveNotebookPage(editor, canvas, mode);
+      });
+      let drawing = false;
+      const drawAt = event => {
+        const bounds = canvas.getBoundingClientRect();
+        const x = (event.clientX - bounds.left) * canvas.width / bounds.width;
+        const y = (event.clientY - bounds.top) * canvas.height / bounds.height;
+        const context = canvas.getContext("2d");
+        context.strokeStyle = $("#notebookPenColor").value;
+        context.lineWidth = Number($("#notebookPenSize").value) * canvas.width / bounds.width;
+        context.lineCap = "round";
+        context.lineJoin = "round";
+        return { x, y, context };
+      };
+      canvas.addEventListener("pointerdown", event => {
+        drawing = true;
+        canvas.setPointerCapture(event.pointerId);
+        const point = drawAt(event);
+        point.context.beginPath();
+        point.context.moveTo(point.x, point.y);
+        point.context.lineTo(point.x + .1, point.y + .1);
+        point.context.stroke();
+      });
+      canvas.addEventListener("pointermove", event => {
+        if (!drawing) return;
+        const point = drawAt(event);
+        point.context.lineTo(point.x, point.y);
+        point.context.stroke();
+      });
+      const finishDrawing = () => {
+        if (!drawing) return;
+        drawing = false;
+        canvas.dataset.drawing = canvas.toDataURL("image/png");
+        saveNotebookPage(editor, canvas, mode);
+      };
+      canvas.addEventListener("pointerup", finishDrawing);
+      canvas.addEventListener("pointercancel", finishDrawing);
+      $("#clearNotebookDrawing").addEventListener("click", () => {
+        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+        canvas.dataset.drawing = "";
+        saveNotebookPage(editor, canvas, mode);
+      });
+      $("#clearNotebook").addEventListener("click", () => {
+        if (!window.confirm(t("notebookClearPage"))) return;
+        editor.innerHTML = "";
+        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+        canvas.dataset.drawing = "";
+        saveNotebookPage(editor, canvas, mode);
+        toast(t("notebookCleared"));
+      });
+    }
+    function setTab(tab) {
+      if (tab === "game") expireGameAccess();
+      state.tab = tab;
+      $$(".tab").forEach(button => {
+        const active = button.dataset.tab === tab;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-selected", String(active));
+      });
+      ["quiz", "challenge", "workbook", "vocab", "editor", "notebook", "speak", "game", "guide"].forEach(name => {
+        const panel = $(`#${name}Panel`);
+        panel.hidden = name !== tab;
+      });
+      renderTab(tab);
+      updateMusicControl();
+      applyMusicForTab();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    function renderTab(tab) {
+      if (tab === "quiz") renderQuiz();
+      if (tab === "challenge") renderChallenge();
+      if (tab === "workbook") renderWorkbook();
+      if (tab === "vocab") renderVocab();
+      if (tab === "editor") renderEditor();
+      if (tab === "notebook") renderNotebook();
+      if (tab === "speak") renderSpeak();
+      if (tab === "game") renderGame();
+      if (tab === "guide") renderGuide();
+    }
+    function updateStats() {
+      $("#statWords").textContent = String(WORDS.length);
+      $("#statScore").textContent = state.lastScore === null ? "—" : `${state.lastScore}%`;
+      $("#statWrong").textContent = String(state.wrong.length);
+    }
+    function shuffled(array) {
+      const result = [...array];
+      for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [result[i], result[j]] = [result[j], result[i]];
+      }
+      return result;
+    }
+    function scoreColor(percentage) {
+      const low = [198, 79, 73];
+      const middle = [231, 185, 84];
+      const high = [55, 132, 96];
+      const progress = percentage <= 50 ? percentage * 2 : (percentage - 50) * 2;
+      const start = percentage <= 50 ? low : middle;
+      const end = percentage <= 50 ? middle : high;
+      const channels = start.map((value, index) => Math.round(value + (end[index] - value) * progress / 100));
+      return `#${channels.map(channel => channel.toString(16).padStart(2, "0")).join("")}`;
+    }
+    function startQuiz() {
+      const questions = shuffled(WORDS.flatMap(item => [
+        { word: idOf(item), type: "spelling" },
+        { word: idOf(item), type: "definition" }
+      ]));
+      state.quiz = {
+        questions: questions.map(question => ({
+          ...question,
+          options: question.type === "definition"
+            ? shuffled([wordByName(question.word), ...shuffled(WORDS.filter(candidate => idOf(candidate) !== question.word)).slice(0, 3)]
+              .map(candidate => ({ value: idOf(candidate) })))
+            : [],
+          selected: null, typedAnswer: "", checked: false
+        })),
+        index: 0, score: 0, done: false
+      };
+      renderQuiz();
+      if (state.sound) window.setTimeout(() => speakWord(wordByName(state.quiz.questions[0].word).word), 220);
+    }
+    function renderQuiz() {
+      const root = $("#quizPanel");
+      if (!state.quiz) {
+        const quizDescription = t("quizSub", { words: WORDS.length });
+        root.innerHTML = `<div class="panel-heading"><div><h2>${t("quizTitle")}</h2><p>${quizDescription}</p></div></div>
+          <div class="card result"><div class="result-emoji">🌿</div><h3>${t("quizTitle")}</h3><p>${quizDescription}</p><button class="primary" id="startQuiz">${t("startQuiz", { count: WORDS.length * 2 })}</button></div>`;
+        $("#startQuiz").addEventListener("click", startQuiz);
+        return;
+      }
+      const quiz = state.quiz;
+      if (quiz.done) {
+        const missed = quiz.questions.length - quiz.score;
+        const percentage = Math.round((quiz.score / quiz.questions.length) * 100);
+        const color = scoreColor(percentage);
+        root.innerHTML = `<div class="panel-heading"><div><h2>${t("quizTitle")}</h2><p>${t("quizSub", { words: WORDS.length })}</p></div></div>
+          <div class="card result"><div class="result-emoji">${percentage >= 80 ? "🌟" : percentage >= 50 ? "🌼" : "🌱"}</div><h3>${t("resultTitle")}</h3>
+          <div class="score-circle" role="img" aria-label="${escapeHTML(t("scoreCircle"))}: ${percentage}%" style="--score-fill:${percentage}%;--score-color:${color}">
+            <div class="score-circle-inner"><span class="score-percent">${percentage}%</span><span class="score-label">${t("scoreCircle")}</span></div>
+          </div>
+          <div class="result-score">${t("scoreBreakdown", { score: quiz.score, total: quiz.questions.length })}</div>
+          <p>${t("resultLine", { score: quiz.score, total: quiz.questions.length })}<br>${t("reviewLine", { count: missed })}</p>
+          <button class="primary" id="retryQuiz">${t("tryAgain")}</button></div>`;
+        $("#retryQuiz").addEventListener("click", startQuiz);
+        return;
+      }
+      const question = quiz.questions[quiz.index];
+      const word = wordByName(question.word);
+      const prompt = question.type === "spelling" ? t("spellingPrompt") : t("definitionPrompt");
+      const options = question.options.map((option, index) => {
+        const optionWord = wordByName(option.value);
+        const label = definitionFor(optionWord);
+        let cls = "choice";
+        if (question.checked && option.value === question.word) cls += " correct";
+        else if (question.checked && option.value === question.selected) cls += " incorrect";
+        else if (option.value === question.selected) cls += " selected";
+        return `<button class="${cls}" data-choice="${escapeHTML(option.value)}" ${question.checked ? "disabled" : ""}><span style="color:#9a9c94;font-weight:700;margin-right:9px">${String.fromCharCode(65 + index)}</span>${escapeHTML(label)}</button>`;
+      }).join("");
+      const isSpelling = question.type === "spelling";
+      const correct = isSpelling
+        ? question.selected === word.word.toLowerCase()
+        : question.selected === question.word;
+      const answerArea = isSpelling
+        ? `<form id="spellingForm" class="spelling-form">
+            <label class="sr-only" for="spellingInput">${t("typeSpelling")}</label>
+            <input class="search spelling-input" id="spellingInput" type="text" value="${escapeHTML(question.typedAnswer)}"
+              placeholder="${escapeHTML(t("typeSpelling"))}" autocomplete="off" autocapitalize="none" spellcheck="false"
+              ${question.checked ? "disabled" : ""}>
+            <button class="primary" type="submit" ${question.checked ? "disabled" : ""}>${t("checkSpelling")}</button>
+          </form>`
+        : `<div class="choices">${options}</div>`;
+      root.innerHTML = `<div class="panel-heading"><div><h2>${t("quizTitle")}</h2><p>${t("quizSub", { words: WORDS.length })}</p></div></div>
+        <div class="card quiz-card">
+          <div class="quiz-meta"><span>${t("questionCount", { current: quiz.index + 1, total: quiz.questions.length })}</span><span>${quiz.score} ${t("right")}</span></div>
+          <div class="progress"><span style="width:${(quiz.index / quiz.questions.length) * 100}%"></span></div>
+          <div class="question-kicker">${t(question.type)}</div><h3 class="question-title">${prompt}</h3>
+          <p class="question-hint">${state.lang === "zh" ? "教练会朗读单词；仔细听后作答。" : "The coach will say the word. Listen carefully, then answer."}</p>
+          <div class="listen-line"><div><small>${t("listenLabel")}</small><span class="listen-word">${question.type === "spelling" ? "••••••••••" : escapeHTML(word.word)}</span></div>
+            <button class="soft-button" id="hearQuestion">${t("readAgain")}</button></div>
+          ${answerArea}
+          <div class="answer-note ${question.checked ? correct ? "ok" : "no" : ""}">${question.checked ? correct ? t("correct") : `${t("wrong")} ${escapeHTML(isSpelling ? word.word : definitionFor(word))}` : isSpelling ? t("enterSpelling") : t("choose")}</div>
+          <div class="quiz-footer"><span style="color:var(--muted);font-size:12px">${quiz.score} ${t("right")}</span><button class="primary" id="nextQuestion" ${!question.checked ? "disabled style=\"opacity:.48;cursor:not-allowed\"" : ""}>${quiz.index === quiz.questions.length - 1 ? t("finishQuiz") : t("next")}</button></div>
+        </div>`;
+      $("#hearQuestion").addEventListener("click", () => speakWord(word.word));
+      function checkAnswer(selected, typedAnswer = "") {
+        question.selected = selected;
+        question.typedAnswer = typedAnswer;
+        question.checked = true;
+        if (isSpelling ? question.selected === word.word.toLowerCase() : question.selected === question.word) {
+          quiz.score++;
+          resolveWrong(question.word, question.type);
+        } else recordWrong(question.word, question.type, typedAnswer || question.selected);
+        renderQuiz();
+      }
+      if (isSpelling) {
+        const spellingInput = $("#spellingInput");
+        spellingInput.addEventListener("input", () => { question.typedAnswer = spellingInput.value; });
+        $("#spellingForm").addEventListener("submit", event => {
+          event.preventDefault();
+          if (question.checked) return;
+          const typedAnswer = spellingInput.value.trim();
+          if (!typedAnswer) { toast(t("enterSpelling")); spellingInput.focus(); return; }
+          checkAnswer(typedAnswer.toLowerCase(), typedAnswer);
+        });
+      } else {
+        $$(".choice", root).forEach(button => button.addEventListener("click", () => {
+          if (question.checked) return;
+          checkAnswer(button.dataset.choice);
+        }));
+      }
+      $("#nextQuestion").addEventListener("click", () => {
+        if (!question.checked) return;
+        if (quiz.index < quiz.questions.length - 1) {
+          quiz.index++;
+          renderQuiz();
+          if (state.sound) window.setTimeout(() => speakWord(wordByName(quiz.questions[quiz.index].word).word), 180);
+        } else {
+          quiz.done = true;
+          state.lastScore = Math.round((quiz.score / quiz.questions.length) * 100);
+          state.gameAccessMs = gameMinutesForScore(state.lastScore) * 60 * 1000;
+          state.gameDeadline = null;
+          if (state.game?.timer) window.clearInterval(state.game.timer);
+          state.game = null;
+          persist(); updateStats(); renderQuiz();
+        }
+      });
+    }
+    function recordWrong(word, type, answer) {
+      const existing = state.wrong.find(item => item.word === word && item.type === type);
+      if (existing) existing.answer = answer;
+      else state.wrong.push({ word, type, answer });
+      persist(); updateStats();
+    }
+    function resolveWrong(word, type) {
+      state.wrong = state.wrong.filter(item => item.word !== word || item.type !== type);
+      persist(); updateStats();
+    }
+    function renderChallenge() {
+      const root = $("#challengePanel");
+      const challenge = state.challenge;
+      if (!challenge) {
+        root.innerHTML = `<div class="panel-heading"><div><h2>${t("challengeTitle")}</h2><p>${t("challengeSub")}</p></div></div>
+          <div class="card result"><div class="result-emoji">✍️</div><h3>${t("challengeTitle")}</h3><p>${t("challengeHint")}</p><button class="primary" id="startChallenge">${t("startChallenge")}</button></div>`;
+        $("#startChallenge").addEventListener("click", () => {
+          state.challenge = { words: shuffled(WORDS).slice(0, 8), index: 0, answer: "", submitted: false };
+          renderChallenge();
+          const item = state.challenge.words[0];
+          if (state.sound) speakWord(item.word);
+        });
+        return;
+      }
+      if (challenge.index >= challenge.words.length) {
+        root.innerHTML = `<div class="card result"><div class="result-emoji">🏆</div><h3>${t("challengeDone")}</h3><p>${t("challengeResult", { count: challenge.words.length })}</p><button class="primary" id="againChallenge">${t("startChallenge")}</button></div>`;
+        $("#againChallenge").addEventListener("click", () => { state.challenge = null; renderChallenge(); });
+        return;
+      }
+      const item = challenge.words[challenge.index];
+      const hasAnswer = challenge.answer.trim().length > 0;
+      const revealed = challenge.submitted;
+      root.innerHTML = `<div class="panel-heading"><div><h2>${t("challengeTitle")}</h2><p>${t("challengeSub")}</p></div></div>
+        <div class="card challenge-card">
+          <div class="quiz-meta"><span>${t("questionCount", { current: challenge.index + 1, total: challenge.words.length })}</span><button class="soft-button" id="hearChallenge">🔊 ${escapeHTML(item.word)}</button></div>
+          <div class="challenge-word">${escapeHTML(item.word)}</div><span class="part-of-speech">${escapeHTML(item.pos)}</span>
+          <p class="challenge-prompt">${t("challengeHint")}</p>
+          <label class="sr-only" for="challengeAnswer">${t("challengeHint")}</label>
+          <textarea id="challengeAnswer" placeholder="${escapeHTML(state.lang === "zh" ? "用英语写下这个词的意思……" : "Write what this word means…")}" ${revealed ? "disabled" : ""}>${escapeHTML(challenge.answer)}</textarea>
+          ${revealed ? `<div class="feedback">${t("answerSaved")}<br><strong>${t("modelAnswer")}</strong> ${escapeHTML(definitionFor(item, "en"))}</div>` : ""}
+          <div class="challenge-foot"><button class="secondary" id="modelAnswer" ${revealed ? "hidden" : ""}>${t("revealDefinition")}</button>
+          <button class="primary" id="finishChallenge" ${!revealed && !hasAnswer ? "disabled style=\"opacity:.5\"" : ""}>${revealed ? t("gotIt") : t("finishAnswer")}</button></div>
+        </div>`;
+      $("#hearChallenge").addEventListener("click", () => speakWord(item.word));
+      const answerBox = $("#challengeAnswer");
+      answerBox.addEventListener("input", () => { challenge.answer = answerBox.value; $("#finishChallenge").disabled = !answerBox.value.trim(); $("#finishChallenge").style.opacity = answerBox.value.trim() ? "1" : ".5"; });
+      $("#modelAnswer").addEventListener("click", () => {
+        challenge.submitted = true; challenge.answer = answerBox.value;
+        renderChallenge();
+      });
+      $("#finishChallenge").addEventListener("click", () => {
+        if (!revealed) {
+          if (!challenge.answer.trim()) { toast(t("challengeContinue")); return; }
+          challenge.submitted = true; renderChallenge();
+        } else {
+          challenge.index++; challenge.answer = ""; challenge.submitted = false; renderChallenge();
+          if (challenge.index < challenge.words.length && state.sound) speakWord(challenge.words[challenge.index].word);
+        }
+      });
+    }
+    function renderWorkbook() {
+      const root = $("#workbookPanel");
+      const items = state.wrong;
+      if (!items.length) {
+        root.innerHTML = `<div class="panel-heading"><div><h2>${t("workbookTitle")}</h2><p>${t("workbookSub")}</p></div></div>
+          <div class="empty"><div class="empty-icon">🌼</div><strong>${t("emptyWrongTitle")}</strong><p style="margin:6px 0 0;font-size:13px">${t("emptyWrongText")}</p></div>`;
+        return;
+      }
+      root.innerHTML = `<div class="panel-heading"><div><h2>${t("workbookTitle")}</h2><p>${t("workbookSub")}</p></div><button class="danger-button" id="clearWrong">${t("clearWrong")}</button></div>
+        <div class="wrong-list">${items.map((entry, index) => {
+          const word = wordByName(entry.word);
+        const answerWord = wordByName(entry.answer);
+        const answer = entry.type === "definition" && answerWord
+          ? definitionFor(answerWord)
+          : entry.answer || t("noAnswer");
+        return `<article class="wrong-item"><div class="wrong-word">${escapeHTML(word.word)}<small>${t(entry.type)} · ${escapeHTML(word.pos)}</small></div>
+          <div class="wrong-def">${escapeHTML(definitionFor(word))}<span class="wrong-answer">${t("yourAnswer")} ${escapeHTML(answer)}</span></div>
+            <div class="item-actions"><button class="soft-button coach-word" data-word="${escapeHTML(idOf(word))}">${t("coach")}</button><button class="danger-button remove-wrong" data-index="${index}" aria-label="Remove ${escapeHTML(word.word)}">×</button></div></article>`;
+        }).join("")}</div>`;
+      $("#clearWrong").addEventListener("click", () => { state.wrong = []; persist(); updateStats(); renderWorkbook(); });
+      $$(".coach-word", root).forEach(button => button.addEventListener("click", () => speakDefinition(button.dataset.word)));
+      $$(".remove-wrong", root).forEach(button => button.addEventListener("click", () => { state.wrong.splice(Number(button.dataset.index), 1); persist(); updateStats(); renderWorkbook(); }));
+    }
+    function renderVocab() {
+      const root = $("#vocabPanel");
+      const filtered = WORDS.filter(item => (state.wordFilter === "all" || item.pos.toLowerCase().includes(state.wordFilter)) &&
+        (!state.search || `${item.word} ${definitionFor(item, "en")} ${definitionFor(item, "zh")}`.toLowerCase().includes(state.search.toLowerCase())));
+      root.innerHTML = `<div class="panel-heading"><div><h2>${t("vocabTitle")}</h2><p>${t("vocabSub")}</p></div><button class="primary" id="printVocab">${t("print")}</button></div>
+        <div class="filter-row"><button class="filter-chip ${state.wordFilter === "all" ? "active" : ""}" data-filter="all">${t("allWords")} · ${WORDS.length}</button>
+          <input class="search" id="wordSearch" type="search" placeholder="${escapeHTML(t("search"))}" value="${escapeHTML(state.search)}" aria-label="${escapeHTML(t("search"))}"></div>
+        ${filtered.length ? `<div class="word-list">${filtered.map(item => `<article class="word-item"><div class="word-name">${escapeHTML(item.word)}<small>${escapeHTML(item.pos)} · ${escapeHTML(item.ipa)}</small></div>
+          <div class="word-def">${escapeHTML(definitionFor(item, "en"))}<div class="cn">${escapeHTML(definitionFor(item, "zh"))}</div></div>
+          <div class="item-actions"><button class="soft-button say-vocab" data-word="${escapeHTML(idOf(item))}">${t("speakWord")}</button><button class="soft-button edit-vocab" data-word="${escapeHTML(idOf(item))}">${t("editDefinition")}</button></div></article>`).join("")}</div>` : `<div class="empty">${t("listEmpty")}</div>`}`;
+      $("#printVocab").addEventListener("click", () => window.print());
+      $("#wordSearch").addEventListener("input", event => { state.search = event.target.value; renderVocab(); const input = $("#wordSearch"); input.focus(); input.setSelectionRange(input.value.length, input.value.length); });
+      $$(".filter-chip", root).forEach(button => button.addEventListener("click", () => { state.wordFilter = button.dataset.filter; renderVocab(); }));
+      $$(".say-vocab", root).forEach(button => button.addEventListener("click", () => speakWord(wordByName(button.dataset.word).word)));
+      $$(".edit-vocab", root).forEach(button => button.addEventListener("click", () => {
+        setTab("editor");
+        $("#editorWord").value = button.dataset.word;
+        renderEditor();
+      }));
+    }
+    function renderSpeak() {
+      const root = $("#speakPanel");
+      const item = wordByName(state.speakIndex) || WORDS[0];
+      const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      root.innerHTML = `<div class="panel-heading"><div><h2>${t("speakTitle")}</h2><p>${t("speakSub")}</p></div></div>
+        <div class="card speak-card">
+          <div class="settings-row" style="justify-content:center"><label for="speakWordSelect">${t("chooseWord")}</label><select id="speakWordSelect">${WORDS.map(entry => `<option value="${escapeHTML(idOf(entry))}" ${idOf(entry) === state.speakIndex ? "selected" : ""}>${escapeHTML(entry.word)} — ${escapeHTML(entry.pos)}</option>`).join("")}</select></div>
+          <div class="speak-orb" id="speakOrb" aria-hidden="true">🎙️</div>
+          <div class="speak-target" id="speakTarget">${escapeHTML(item.word)}</div>
+          <p class="speak-help" id="speakHelp">${Recognition ? t("micReady") : t("micUnsupported")}</p>
+          <div class="score-meter" aria-label="${t("scoreLabel")}"><span id="meterFill" style="width:0%"></span></div>
+          <div class="voice-score" id="voiceScore"></div><div id="heardText" style="margin-top:6px;color:var(--muted);font-size:13px"></div>
+          <div class="settings-row" style="justify-content:center;margin-top:20px">
+            <button class="secondary" id="playSpeakTarget">${t("playTarget")}</button>
+            <button class="primary" id="recordButton" ${Recognition ? "" : "disabled"}>${t("sayIt")}</button>
+          </div>
+          <p style="margin:4px 0 0;color:var(--muted);font-size:11px">${t("scoreHelp")}</p>
+        </div>`;
+      $("#speakWordSelect").addEventListener("change", event => {
+        state.speakIndex = event.target.value; renderSpeak();
+      });
+      $("#playSpeakTarget").addEventListener("click", () => speakWord(item.word));
+      if (Recognition) $("#recordButton").addEventListener("click", startRecognition);
+    }
+    const MAZE_LEVELS = [
+      { cols: 13, rows: 11, enemies: 3, hp: 1, escapeMs: 2400 },
+      { cols: 17, rows: 13, enemies: 4, hp: 1, escapeMs: 2150 },
+      { cols: 21, rows: 15, enemies: 5, hp: 2, escapeMs: 1900 },
+      { cols: 25, rows: 17, enemies: 6, hp: 2, escapeMs: 1650 },
+      { cols: 29, rows: 19, enemies: 7, hp: 3, escapeMs: 1400 }
+    ];
+    function makeMaze(cols, rows) {
+      const grid = Array.from({ length: rows }, () => Array(cols).fill(1));
+      const stack = [[1, 1]];
+      grid[1][1] = 0;
+      while (stack.length) {
+        const [x, y] = stack[stack.length - 1];
+        const neighbors = shuffled([[0, -2], [0, 2], [-2, 0], [2, 0]])
+          .map(([dx, dy]) => [x + dx, y + dy])
+          .filter(([nx, ny]) => nx > 0 && ny > 0 && nx < cols - 1 && ny < rows - 1 && grid[ny][nx] === 1);
+        if (!neighbors.length) {
+          stack.pop();
+          continue;
+        }
+        const [nx, ny] = neighbors[0];
+        grid[(y + ny) / 2][(x + nx) / 2] = 0;
+        grid[ny][nx] = 0;
+        stack.push([nx, ny]);
+      }
+      for (let y = 1; y < rows - 1; y++) {
+        for (let x = 1; x < cols - 1; x++) {
+          if (grid[y][x] !== 1 || Math.random() > .09) continue;
+          if ((grid[y][x - 1] === 0 && grid[y][x + 1] === 0) || (grid[y - 1][x] === 0 && grid[y + 1][x] === 0)) grid[y][x] = 0;
+        }
+      }
+      grid[1][1] = 0;
+      grid[rows - 2][cols - 2] = 0;
+      return grid;
+    }
+    function mazeDistances(grid, targetX, targetY) {
+      const rows = grid.length, cols = grid[0].length;
+      const distance = Array.from({ length: rows }, () => Array(cols).fill(Infinity));
+      const queue = [[targetX, targetY]];
+      distance[targetY][targetX] = 0;
+      for (let index = 0; index < queue.length; index++) {
+        const [x, y] = queue[index];
+        for (const [dx, dy] of [[0, -1], [1, 0], [0, 1], [-1, 0]]) {
+          const nx = x + dx, ny = y + dy;
+          if (grid[ny]?.[nx] !== 0 || distance[ny][nx] !== Infinity) continue;
+          distance[ny][nx] = distance[y][x] + 1;
+          queue.push([nx, ny]);
+        }
+      }
+      return distance;
+    }
+    function gameMinutesForScore(score) {
+      if (score >= 100) return 10;
+      if (score >= 90) return 5;
+      if (score >= 80) return 2;
+      return 0;
+    }
+    function gameTimeRemaining() {
+      return state.gameDeadline === null
+        ? state.gameAccessMs
+        : Math.max(0, state.gameDeadline - Date.now());
+    }
+    function formatGameTime(milliseconds) {
+      const totalSeconds = Math.ceil(milliseconds / 1000);
+      return `${Math.floor(totalSeconds / 60)}:${String(totalSeconds % 60).padStart(2, "0")}`;
+    }
+    function expireGameAccess() {
+      if (state.gameDeadline === null || Date.now() < state.gameDeadline) return false;
+      state.gameDeadline = null;
+      state.gameAccessMs = 0;
+      persist();
+      if (state.tab === "game") {
+        updateMusicControl();
+        applyMusicForTab();
+      }
+      if (state.game) {
+        const pause = state.game.status !== "won";
+        if (state.game.timer) window.clearInterval(state.game.timer);
+        if (pause) state.game.status = "timeup";
+        if (state.tab === "game") renderGame();
+        return pause;
+      }
+      return false;
+    }
+    function buildGameLevel(game, level) {
+      const config = MAZE_LEVELS[level - 1];
+      const grid = makeMaze(config.cols, config.rows);
+      const exit = { x: config.cols - 2, y: config.rows - 2 };
+      const distance = mazeDistances(grid, exit.x, exit.y);
+      const candidates = [];
+      for (let y = 1; y < config.rows - 1; y++) {
+        for (let x = 1; x < config.cols - 1; x++) {
+          if (grid[y][x] === 0 && distance[y][x] > 4 && !(x === exit.x && y === exit.y)) candidates.push({ x, y });
+        }
+      }
+      const start = { x: 1, y: 1 };
+      const demons = [];
+      for (const spot of shuffled(candidates)) {
+        if (demons.length >= config.enemies) break;
+        if (Math.abs(spot.x - start.x) + Math.abs(spot.y - start.y) < 4) continue;
+        if (demons.some(demon => Math.abs(spot.x - demon.x) + Math.abs(spot.y - demon.y) < 2)) continue;
+        const vocab = WORDS[Math.floor(Math.random() * WORDS.length)];
+        demons.push({
+          ...spot, id: `${level}-${demons.length}-${idOf(vocab)}`, word: idOf(vocab),
+          type: demons.length % 3 === 0 ? "red" : "blue", hp: config.hp, maxHp: config.hp, lastMove: Date.now()
+        });
+      }
+      game.level = level;
+      game.grid = grid;
+      game.exit = exit;
+      game.player = { ...start };
+      game.demons = demons;
+      game.powerups = [];
+      game.escaped = 0;
+      game.levelComplete = false;
+      game.distance = distance;
+      game.lastDemonMove = Date.now();
+      renderGame();
+    }
+    function startGame() {
+      syncGamePlayDay();
+      expireGameAccess();
+      if (state.gamePlaysToday >= 3) { renderGame(); return; }
+      const remaining = gameTimeRemaining();
+      if (remaining <= 0) { renderGame(); return; }
+      if (state.game?.timer) window.clearInterval(state.game.timer);
+      if (state.gameDeadline === null) {
+        state.gameDeadline = Date.now() + remaining;
+        state.gameAccessMs = 0;
+        persist();
+      }
+      state.game = { level: 1, lives: 3, speedUntil: 0, crossUntil: 0, question: null, escaped: 0, status: "playing" };
+      state.gamePlaysToday++;
+      persist();
+      buildGameLevel(state.game, 1);
+      state.game.timer = window.setInterval(gameTick, 50);
+    }
+    function moveGame(dx, dy) {
+      if (expireGameAccess()) return;
+      const game = state.game;
+      if (!game || game.status !== "playing" || game.question || game.levelComplete || state.tab !== "game") return;
+      const now = Date.now();
+      const stepMs = now < game.speedUntil ? 85 : 140;
+      if (now - (game.lastMove || 0) < stepMs) return;
+      game.lastMove = now;
+      const x = game.player.x + dx, y = game.player.y + dy;
+      if (!game.grid[y] || game.grid[y][x] === undefined || (game.grid[y][x] === 1 && now >= game.crossUntil)) return;
+      const previousPosition = game.player;
+      game.player = { x, y };
+      const demon = game.demons.find(enemy => enemy.x === x && enemy.y === y);
+      if (demon) {
+        game.player = previousPosition;
+        beginGameQuestion(game, demon);
+        return;
+      }
+      game.player.move = { from: previousPosition, to: { x, y }, started: now, duration: 125 };
+      const powerIndex = game.powerups.findIndex(power => power.x === x && power.y === y);
+      if (powerIndex !== -1) {
+        const power = game.powerups.splice(powerIndex, 1)[0];
+        if (power.type === "speed") game.speedUntil = Math.max(now, game.speedUntil) + 10000;
+        else game.crossUntil = Math.max(now, game.crossUntil) + 8000;
+      }
+      if (!game.demons.length && x === game.exit.x && y === game.exit.y) game.levelComplete = true;
+      drawMaze();
+      updateGameHud();
+      if (game.levelComplete) renderGame();
+    }
+    function beginGameQuestion(game, demon) {
+      const word = wordByName(demon.word);
+      const type = Math.random() < .5 ? "spelling" : "definition";
+      game.question = {
+        demonId: demon.id, demonWord: demon.word, type, word: word.word, resolved: false, selected: null,
+        options: type === "definition"
+          ? shuffled([word, ...shuffled(WORDS.filter(item => idOf(item) !== demon.word)).slice(0, 3)].map(item => idOf(item)))
+          : []
+      };
+      renderGame();
+      if (type === "spelling") speakWord(word.word);
+    }
+    function answerGameQuestion(answer) {
+      if (expireGameAccess()) return;
+      const game = state.game;
+      const question = game?.question;
+      if (!question || question.resolved || !answer.trim()) return;
+      const word = wordByName(question.demonWord);
+      const normalized = answer.trim().toLowerCase();
+      const correct = question.type === "spelling" ? normalized === word.word.toLowerCase() : normalized === question.demonWord;
+      question.resolved = true;
+      question.correct = correct;
+      question.answer = answer.trim();
+      if (correct) {
+        const demon = game.demons.find(enemy => enemy.id === question.demonId);
+        if (demon) {
+          demon.hp--;
+          if (demon.hp <= 0) {
+            game.demons = game.demons.filter(enemy => enemy !== demon);
+            game.powerups.push({ x: demon.x, y: demon.y, type: Math.random() < .7 ? "speed" : "wall" });
+          }
+        }
+        resolveWrong(question.demonWord, question.type);
+      } else {
+        recordWrong(question.demonWord, question.type, question.type === "spelling" ? answer.trim() : answer);
+        game.lives = Math.max(0, game.lives - 1);
+        game.player = { x: 1, y: 1 };
+        if (game.lives === 0) game.status = "gameover";
+      }
+      renderGame();
+    }
+    function gameTick() {
+      if (expireGameAccess()) return;
+      const game = state.game;
+      if (!game || game.status !== "playing" || game.question || game.levelComplete || state.tab !== "game") return;
+      const now = Date.now();
+      moveDemons(game, now);
+      drawMaze();
+      updateGameHud();
+    }
+    function moveDemons(game, now = Date.now()) {
+      const config = MAZE_LEVELS[game.level - 1];
+      const playerDistance = mazeDistances(game.grid, game.player.x, game.player.y);
+      for (const demon of [...game.demons]) {
+        const moveEvery = config.escapeMs / (demon.type === "red" ? 2 : 1);
+        if (now - demon.lastMove < moveEvery) continue;
+        demon.lastMove = now;
+        const distance = demon.type === "red" ? playerDistance : game.distance;
+        const current = distance[demon.y][demon.x];
+        const moves = shuffled([[0, -1], [1, 0], [0, 1], [-1, 0]])
+          .map(([dx, dy]) => ({ x: demon.x + dx, y: demon.y + dy }))
+          .filter(spot => game.grid[spot.y]?.[spot.x] === 0 && distance[spot.y][spot.x] < current);
+        if (!moves.length) continue;
+        const from = { x: demon.x, y: demon.y };
+        const next = moves[0];
+        demon.x = next.x;
+        demon.y = next.y;
+        demon.move = { from, to: { x: next.x, y: next.y }, started: now, duration: Math.max(70, moveEvery) };
+        if (demon.x === game.exit.x && demon.y === game.exit.y) {
+          game.lives = Math.max(0, game.lives - 1);
+          game.escaped++;
+          const replacement = shuffled(game.grid.flatMap((row, y) => row.flatMap((cell, x) =>
+            cell === 0 && game.distance[y][x] > 4 && !(x === game.exit.x && y === game.exit.y) &&
+            Math.abs(x - game.player.x) + Math.abs(y - game.player.y) > 4
+              ? [{ x, y }] : []
+          )))[0];
+          if (replacement) { demon.x = replacement.x; demon.y = replacement.y; }
+          else game.demons = game.demons.filter(enemy => enemy !== demon);
+          toast(t("gameEscaped"));
+          if (game.lives === 0) { game.status = "gameover"; renderGame(); return; }
+        }
+      }
+      const touched = game.demons.find(demon => demon.x === game.player.x && demon.y === game.player.y);
+      if (touched) beginGameQuestion(game, touched);
+    }
+    function updateGameHud() {
+      const game = state.game;
+      if (!game || !$("#gameHud")) return;
+      const seconds = ms => Math.max(0, Math.ceil((ms - Date.now()) / 1000));
+      $("#gameLives").textContent = `${t("gameLives")}: ${"❤️".repeat(game.lives)}${"🖤".repeat(3 - game.lives)}`;
+      $("#gameDemons").textContent = `${t("gameDemons")}: ${game.demons.length}`;
+      $("#gameLevel").textContent = t("gameLevel", { level: game.level });
+      const time = $("#gameTime");
+      if (time) time.textContent = t("gameTime", { time: formatGameTime(gameTimeRemaining()) });
+      const boosts = [];
+      if (game.speedUntil > Date.now()) boosts.push(t("gameSpeedActive", { seconds: seconds(game.speedUntil) }));
+      if (game.crossUntil > Date.now()) boosts.push(t("gameWallActive", { seconds: seconds(game.crossUntil) }));
+      $("#gamePowerups").textContent = `${t("gamePowerups")}: ${boosts.join(" · ") || "—"}`;
+      const message = $("#gameStatus");
+      if (message) message.textContent = game.demons.length ? t("gameExitLocked") : t("gameExitReady");
+      drawMaze();
+    }
+    function interpolatedPosition(actor, now) {
+      if (!actor.move) return { x: actor.x, y: actor.y };
+      const progress = Math.max(0, Math.min(1, (now - actor.move.started) / actor.move.duration));
+      if (progress === 1) {
+        actor.move = null;
+        return { x: actor.x, y: actor.y };
+      }
+      return {
+        x: actor.move.from.x + (actor.move.to.x - actor.move.from.x) * progress,
+        y: actor.move.from.y + (actor.move.to.y - actor.move.from.y) * progress
+      };
+    }
+    function drawPixelCharacter(context, type, actor, cellSize, now) {
+      const player = type === "player";
+      const pattern = player
+        ? ["....YYYY....", "..YYYYYYYY..", ".YYYYYYYYYY.", "YYYYYYYYYYYY", "YYYYYYYYYYYY", "YYYYYYYY....",
+          "YYYYYYYY....", "YYYYYYYYYYYY", "YYYYYYYYYYYY", ".YYYYYYYYYY.", "..YYYYYYYY..", "....YYYY...."]
+        : ["....CCCC....", "..CCCCCCCC..", ".CCCCCCCCCC.", "CCCCCCCCCCCC", "CCWWWWWWWWCC", "CCWWDWWDWWCC",
+          "CCWWDWWDWWCC", "CCCCCCCCCCCC", "CCCCCCCCCCCC", "CC..CC..CC..", "CC..CC..CC..", "............"];
+      const shade = player ? "#f0c84d" : type === "red" ? "#db675b" : "#4e91d8";
+      const colors = { Y: shade, C: shade, W: "#fff", D: "#283340" };
+      const position = interpolatedPosition(actor, now);
+      const pixel = 2;
+      const size = pixel * 12;
+      const left = position.x * cellSize + (cellSize - size) / 2;
+      const top = position.y * cellSize + (cellSize - size) / 2;
+      for (let row = 0; row < pattern.length; row++) {
+        for (let col = 0; col < pattern[row].length; col++) {
+          const color = colors[pattern[row][col]];
+          if (!color) continue;
+          context.fillStyle = color;
+          context.fillRect(left + col * pixel, top + row * pixel, pixel, pixel);
+        }
+      }
+    }
+    function drawMaze() {
+      const game = state.game;
+      const canvas = $("#mazeCanvas");
+      if (!game || !canvas) return;
+      const cellSize = 28;
+      const cols = game.grid[0].length, rows = game.grid.length;
+      const ratio = window.devicePixelRatio || 1;
+      const width = cols * cellSize, height = rows * cellSize;
+      if (canvas.width !== Math.round(width * ratio) || canvas.height !== Math.round(height * ratio)) {
+        canvas.width = Math.round(width * ratio);
+        canvas.height = Math.round(height * ratio);
+        canvas.style.width = `${width}px`;
+      }
+      const context = canvas.getContext("2d");
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      context.clearRect(0, 0, width, height);
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          context.fillStyle = game.grid[y][x] ? "#526256" : "#fbfaf5";
+          context.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+          if (game.grid[y][x]) {
+            context.fillStyle = "rgba(255,255,255,.035)";
+            context.fillRect(x * cellSize + 4, y * cellSize + 4, cellSize - 8, cellSize - 8);
+          }
+        }
+      }
+      const emoji = (symbol, x, y, size = 21) => {
+        context.font = `${size}px "Apple Color Emoji","Segoe UI Emoji",sans-serif`;
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        context.fillText(symbol, x * cellSize + cellSize / 2, y * cellSize + cellSize / 2 + 1);
+      };
+      context.fillStyle = game.demons.length ? "#9a9b91" : "#d7a735";
+      context.fillRect(game.exit.x * cellSize + 3, game.exit.y * cellSize + 3, cellSize - 6, cellSize - 6);
+      emoji("🚪", game.exit.x, game.exit.y);
+      for (const power of game.powerups) emoji(power.type === "speed" ? "⚡" : "✨", power.x, power.y);
+      const now = Date.now();
+      for (const demon of game.demons) {
+        drawPixelCharacter(context, demon.type, demon, cellSize, now);
+        if (demon.maxHp > 1) {
+          context.fillStyle = "#fff";
+          context.font = "bold 9px sans-serif";
+          context.fillText("♥".repeat(demon.hp), demon.x * cellSize + cellSize / 2, demon.y * cellSize + cellSize - 3);
+        }
+      }
+      drawPixelCharacter(context, "player", game.player, cellSize, now);
+    }
+    function renderGame() {
+      const root = $("#gamePanel");
+      const game = state.game;
+      if (!game) {
+        syncGamePlayDay();
+        const levels = MAZE_LEVELS.map((_, index) => `<span class="maze-level">${t("gameLevel", { level: index + 1 })}</span>`).join("");
+        const remaining = gameTimeRemaining();
+        const unlocked = remaining > 0;
+        const canPlayToday = state.gamePlaysToday < 3;
+        root.innerHTML = `<div class="panel-heading"><div><h2>${t("gameTitle")}</h2><p>${t("gameSubtitle")}</p></div></div>
+          <div class="card maze-start"><div class="result-emoji">🎒</div><p>${t("gameControls")}</p><p>${t("gamePractice")}</p>
+          <p>${unlocked ? t("gameUnlock", { score: state.lastScore, minutes: Math.ceil(remaining / 60000) }) : t("gameLocked")}</p>
+          <p>${t("gameDailyCount", { used: state.gamePlaysToday })}</p>
+          <p>${t("gameDailyLeft", { left: Math.max(0, 3 - state.gamePlaysToday) })}</p>
+          ${canPlayToday ? "" : `<p class="notebook-notice">${t("gameDailyLimit")}</p>`}
+          <div class="maze-levels">${levels}</div>${unlocked && canPlayToday
+            ? `<button class="primary" id="startGame">${t("gameStart")}</button>`
+            : `<button class="primary" id="newQuizForGame">${t("gameRetake")}</button>`}</div>`;
+        $("#startGame")?.addEventListener("click", startGame);
+        $("#newQuizForGame")?.addEventListener("click", () => setTab("quiz"));
+        return;
+      }
+      const gameOver = game.status === "gameover";
+      const won = game.status === "won";
+      const timeUp = game.status === "timeup";
+      let overlay = "";
+      if (game.question) {
+        const question = game.question;
+        const word = wordByName(question.demonWord);
+        let inputArea = "";
+        if (question.type === "spelling") {
+          inputArea = `<form id="gameSpellingForm" class="spelling-form"><label class="sr-only" for="gameSpelling">${t("typeSpelling")}</label>
+            <input class="search spelling-input" id="gameSpelling" placeholder="${escapeHTML(t("typeSpelling"))}" autocomplete="off" autocapitalize="none" spellcheck="false">
+            <button class="primary" type="submit">${t("gameSubmit")}</button></form>`;
+        } else {
+          inputArea = `<div class="maze-options">${question.options.map(key => {
+            const option = wordByName(key);
+            return `<button class="choice maze-choice" data-answer="${escapeHTML(key)}">${escapeHTML(definitionFor(option))}</button>`;
+          }).join("")}</div>`;
+        }
+        const feedback = question.resolved
+          ? question.correct
+            ? game.demons.some(demon => demon.id === question.demonId)
+              ? t("gameDemonHit", { health: game.demons.find(demon => demon.id === question.demonId).hp })
+              : t("gameCorrect")
+            : t("gameWrong", { answer: question.type === "spelling" ? word.word : definitionFor(word) })
+          : "";
+        overlay = `<div class="maze-overlay"><section class="maze-dialog" role="dialog" aria-modal="true" aria-labelledby="gameQuestionTitle">
+          <div class="question-kicker">${t(question.type)}</div>
+          <h3 id="gameQuestionTitle">${question.type === "spelling" ? t("gameQuestionSpelling") : t("gameQuestionDefinition")}</h3>
+          ${question.type === "spelling"
+            ? `<button class="soft-button" id="gameHearWord">${t("readAgain")}</button>`
+            : `<div class="maze-word">${escapeHTML(word.word)}</div><p>${escapeHTML(word.pos)}</p>`}
+          ${question.resolved ? "" : inputArea}
+          <div class="maze-feedback ${question.resolved && !question.correct ? "wrong" : ""}">${escapeHTML(feedback)}</div>
+          ${question.resolved ? `<button class="primary" id="gameContinue">${t("gameContinue")}</button>` : ""}
+        </section></div>`;
+      } else if (timeUp) {
+        overlay = `<div class="maze-overlay"><section class="maze-dialog maze-gameover" role="dialog" aria-modal="true"><div class="result-emoji">⏱️</div>
+          <h3>${t("gameTimeUp")}</h3><button class="primary" id="newQuizForGame">${t("gameRetake")}</button></section></div>`;
+      } else if (gameOver) {
+        overlay = `<div class="maze-overlay"><section class="maze-dialog maze-gameover" role="dialog" aria-modal="true"><div class="result-emoji">💫</div>
+          <h3>${t("gameOver")}</h3><p>${t("gameOverText")}</p>${gameTimeRemaining() > 0 && state.gamePlaysToday < 3
+            ? `<button class="primary" id="restartGame">${t("gameResume")}</button>`
+            : state.gamePlaysToday < 3 ? `<button class="primary" id="newQuizForGame">${t("gameRetake")}</button>` : `<p>${t("gameDailyLimit")}</p>`}</section></div>`;
+      } else if (won) {
+        overlay = `<div class="maze-overlay"><section class="maze-dialog maze-gameover" role="dialog" aria-modal="true"><div class="result-emoji">🏆</div>
+          <h3>${t("gameWon")}</h3><p>${t("gameWonText")}</p>${gameTimeRemaining() > 0 && state.gamePlaysToday < 3
+            ? `<button class="primary" id="restartGame">${t("gameResume")}</button>`
+            : state.gamePlaysToday < 3 ? `<button class="primary" id="newQuizForGame">${t("gameRetake")}</button>` : `<p>${t("gameDailyLimit")}</p>`}</section></div>`;
+      } else if (game.levelComplete) {
+        const finalLevel = game.level === 5;
+        overlay = `<div class="maze-overlay"><section class="maze-dialog maze-gameover" role="dialog" aria-modal="true"><div class="result-emoji">🌟</div>
+          <h3>${t("gameLevelDone", { level: game.level })}</h3><p>${t(finalLevel ? "gameWonText" : "gameExitReady")}</p>
+          <button class="primary" id="nextGameLevel">${t(finalLevel ? "gameWon" : "gameNextLevel", { level: game.level + 1 })}</button></section></div>`;
+      }
+      root.innerHTML = `<div class="panel-heading"><div><h2>${t("gameTitle")}</h2><p>${t("gameSubtitle")}</p></div></div>
+        <div class="card maze-card">
+          <div class="maze-hud" id="gameHud"><div class="maze-hud-group">
+            <span class="maze-badge" id="gameLevel">${t("gameLevel", { level: game.level })}</span>
+            <span class="maze-badge" id="gameLives"></span>
+            <span class="maze-badge" id="gameDemons"></span>
+          </div><span class="maze-badge" id="gameTime"></span><span class="maze-badge" id="gamePowerups"></span></div>
+          <div class="maze-stage"><canvas class="maze-canvas" id="mazeCanvas" role="img" aria-label="${escapeHTML(t("gameTitle"))}"></canvas></div>
+          <p class="maze-help">${t("gameLegend")}</p><p class="maze-help" id="gameStatus"></p><p class="maze-help">${t("gameControls")}</p>
+          <div class="maze-controls" aria-label="${escapeHTML(t("gameControls"))}">
+            <button class="maze-up" data-move="0,-1" aria-label="Up">↑</button><button class="maze-left" data-move="-1,0" aria-label="Left">←</button>
+            <button class="maze-down" data-move="0,1" aria-label="Down">↓</button><button class="maze-right" data-move="1,0" aria-label="Right">→</button>
+          </div></div>${overlay}`;
+      updateGameHud();
+      $$("[data-move]", root).forEach(button => button.addEventListener("click", () => {
+        const [dx, dy] = button.dataset.move.split(",").map(Number);
+        moveGame(dx, dy);
+      }));
+      $("#gameHearWord")?.addEventListener("click", () => speakWord(game.question.word));
+      $("#gameSpellingForm")?.addEventListener("submit", event => {
+        event.preventDefault();
+        const value = $("#gameSpelling").value;
+        if (!value.trim()) { toast(t("gameEmpty")); $("#gameSpelling").focus(); return; }
+        answerGameQuestion(value);
+      });
+      $$(".maze-choice", root).forEach(button => button.addEventListener("click", () => answerGameQuestion(button.dataset.answer)));
+      $("#gameContinue")?.addEventListener("click", () => {
+        if (expireGameAccess()) return;
+        game.question = null;
+        if (game.status !== "gameover" && game.demons.length === 0 && game.player.x === game.exit.x && game.player.y === game.exit.y) game.levelComplete = true;
+        renderGame();
+      });
+      $("#nextGameLevel")?.addEventListener("click", () => {
+        if (expireGameAccess()) return;
+        if (game.level === 5) {
+          game.status = "won";
+          renderGame();
+        } else buildGameLevel(game, game.level + 1);
+      });
+      $("#restartGame")?.addEventListener("click", startGame);
+      $("#newQuizForGame")?.addEventListener("click", () => setTab("quiz"));
+      drawMaze();
+    }
+    function renderGuide() {
+      const root = $("#guidePanel");
+      const license = `MIT License
+
+Copyright (c) 2026 Mr. Dahl Vocab contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.`;
+      root.innerHTML = `<div class="panel-heading"><div><h2>${t("guideTitle")}</h2><p>${t("guideSubtitle")}</p></div></div>
+        <div class="guide-grid">
+          <article class="guide-card"><h3>${t("guideQuizTitle")}</h3><p>${t("guideQuiz", { words: WORDS.length })}</p></article>
+          <article class="guide-card"><h3>${t("guideStudyTitle")}</h3><p>${t("guideStudy")}</p></article>
+          <article class="guide-card"><h3>${t("guideNotebookTitle")}</h3><p>${t("guideNotebook")}</p></article>
+          <article class="guide-card"><h3>${t("guideSpeechTitle")}</h3><p>${t("guideSpeech")}</p></article>
+          <article class="guide-card"><h3>${t("guideProgressTitle")}</h3><p>${t("guideProgress")}</p></article>
+          <article class="guide-card"><h3>${t("guideGameTitle")}</h3><p>${t("guideGame")}</p></article>
+        </div>
+        <div class="source-heading"><h3>${t("sourceTitle")}</h3><button class="primary" id="copySource">${t("copyCode")}</button></div>
+        <p class="intro" style="margin-bottom:12px">${t("sourceDescription")}</p>
+        <label class="sr-only" for="sourceCode">${t("sourceTitle")}</label>
+        <textarea class="source-code" id="sourceCode" readonly spellcheck="false" placeholder="${escapeHTML(state.lang === "zh" ? "点击“复制全部源码”以加载完整代码。也可以在下方选中并复制。" : "Click “Copy full source code” to load the complete code here. You can also select and copy it manually.")}"></textarea>
+        <div class="license-box"><h3>${t("licenseTitle")}</h3><p>${t("licenseNote")}</p><pre>${escapeHTML(license)}</pre></div>`;
+      $("#copySource").addEventListener("click", async () => {
+        const sourceArea = $("#sourceCode");
+        let source;
+        try {
+          if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+            const response = await fetch(window.location.href, { cache: "no-store" });
+            if (!response.ok) throw new Error(`Source request failed: ${response.status}`);
+            source = await response.text();
+          } else {
+            const doctype = document.doctype ? `<!DOCTYPE ${document.doctype.name}>\n` : "";
+            source = `${doctype}${document.documentElement.outerHTML}`;
+          }
+          sourceArea.value = source;
+          try {
+            await navigator.clipboard.writeText(source);
+            toast(t("copyDone"));
+          } catch (clipboardError) {
+            sourceArea.focus();
+            sourceArea.select();
+            if (document.execCommand("copy")) toast(t("copyDone"));
+            else {
+              toast(t("copyFailed"));
+              console.warn("Clipboard access is unavailable; the source is loaded for manual copying.", clipboardError);
+            }
+          }
+        } catch (error) {
+          toast(t("copyFailed"));
+          console.error("Could not load the website source code.", error);
+        }
+      });
+    }
+    function startRecognition() {
+      const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!Recognition) { toast(t("micUnsupported")); return; }
+      if (state.recognition) { state.recognition.stop(); return; }
+      const recognition = new Recognition();
+      state.recognition = recognition;
+      recognition.lang = "en-US"; recognition.interimResults = false; recognition.maxAlternatives = 1;
+      const button = $("#recordButton"), orb = $("#speakOrb"), help = $("#speakHelp");
+      button.textContent = t("stopListen"); orb.classList.add("recording"); help.textContent = t("listening");
+      recognition.onresult = event => {
+        const heard = event.results[0][0].transcript.trim();
+        const target = (wordByName(state.speakIndex) || WORDS[0]).word.toLowerCase();
+        const actual = heard.toLowerCase().replace(/[^a-z\s]/g, "").trim();
+        const score = actual === target ? 100 : actual.split(/\s+/).reduce((best, token) => Math.max(best, similarity(target, token)), 0);
+        $("#meterFill").style.width = `${score}%`;
+        $("#voiceScore").textContent = `${t("scoreLabel")}: ${score}%`;
+        $("#heardText").textContent = `${t("heard")} ${heard}`;
+        help.textContent = score > 74 ? t("correct") : t("noMatch");
+      };
+      recognition.onerror = event => {
+        state.recognition = null;
+        if ($("#recordButton")) $("#recordButton").textContent = t("sayIt");
+        if ($("#speakOrb")) $("#speakOrb").classList.remove("recording");
+        if ($("#speakHelp")) $("#speakHelp").textContent = event.error === "not-allowed" || event.error === "service-not-allowed" ? t("permissionError") : t("micError");
+      };
+      recognition.onend = () => {
+        state.recognition = null;
+        if ($("#recordButton")) $("#recordButton").textContent = t("sayIt");
+        if ($("#speakOrb")) $("#speakOrb").classList.remove("recording");
+        if ($("#speakHelp") && $("#speakHelp").textContent === t("listening")) $("#speakHelp").textContent = t("micError");
+      };
+      try { recognition.start(); }
+      catch (error) { state.recognition = null; toast(t("permissionError")); console.error("Could not start speech recognition.", error); }
+    }
+    function similarity(left, right) {
+      const row = Array.from({ length: right.length + 1 }, (_, index) => index);
+      for (let i = 1; i <= left.length; i++) {
+        let diagonal = row[0]; row[0] = i;
+        for (let j = 1; j <= right.length; j++) {
+          const above = row[j];
+          row[j] = Math.min(row[j] + 1, row[j - 1] + 1, diagonal + (left[i - 1] === right[j - 1] ? 0 : 1));
+          diagonal = above;
+        }
+      }
+      return Math.max(0, Math.round((1 - row[right.length] / Math.max(left.length, right.length)) * 100));
+    }
+    function updateLanguage() {
+      document.documentElement.lang = state.lang === "zh" ? "zh-CN" : "en";
+      $("#languageSelect").value = state.lang;
+      $$("[data-i18n]").forEach(node => { node.textContent = t(node.dataset.i18n); });
+      setCloudStatus(cloudStatusKey, cloudStatusDetail);
+      updateDailyDefinition();
+      $("#soundButton").textContent = state.sound ? "🔊" : "🔇";
+      $("#soundButton").setAttribute("aria-label", state.sound ? t("soundOn") : t("soundOff"));
+      updateMusicControl();
+      updateStats(); persist(); renderTab(state.tab);
+    }
+    function renderSettings() {
+      const voices = state.voices.filter(voice => voice.lang.toLowerCase().startsWith("en") || voice.lang.toLowerCase().startsWith("zh"));
+      const options = voices.length ? voices.map(voice => `<option value="${escapeHTML(voice.voiceURI)}" ${state.voiceURI === voice.voiceURI ? "selected" : ""}>${escapeHTML(voice.name)} (${escapeHTML(voice.lang)})</option>`).join("") : `<option value="">${t("noVoices")}</option>`;
+      const region = $("#toastRegion");
+      region.innerHTML = `<div class="toast" style="position:fixed;right:20px;bottom:20px;z-index:5;min-width:min(340px,calc(100vw - 40px));padding:16px;background:white;color:var(--ink);border:1px solid var(--line)">
+        <strong>${t("settingTitle")}</strong><div class="settings-row" style="margin:12px 0 0"><select id="voiceSelect" aria-label="${t("settingTitle")}"><option value="">${t("noVoices")}</option>${options}</select><button class="soft-button" id="closeSettings">${t("stop")}</button></div></div>`;
+      $("#voiceSelect").value = state.voiceURI;
+      $("#voiceSelect").addEventListener("change", event => { state.voiceURI = event.target.value; persist(); });
+      $("#closeSettings").addEventListener("click", () => { region.innerHTML = ""; });
+    }
+    let applicationStarted = false;
+    function startApplication() {
+      if (applicationStarted) return;
+      applicationStarted = true;
+      $("#accessGate").hidden = true;
+      $("#appShell").hidden = false;
+      document.addEventListener("click", event => {
+      const button = event.target.closest(".tab");
+      if (button) setTab(button.dataset.tab);
+      });
+      document.addEventListener("keydown", event => {
+      if (state.tab !== "game" || !state.game) return;
+      const target = event.target;
+      if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement) return;
+      const moves = {
+        ArrowUp: [0, -1], w: [0, -1], W: [0, -1],
+        ArrowRight: [1, 0], d: [1, 0], D: [1, 0],
+        ArrowDown: [0, 1], s: [0, 1], S: [0, 1],
+        ArrowLeft: [-1, 0], a: [-1, 0], A: [-1, 0]
+      };
+      const move = moves[event.key];
+      if (!move) return;
+      event.preventDefault();
+      moveGame(move[0], move[1]);
+      });
+      $("#languageSelect").addEventListener("change", event => { state.lang = event.target.value; updateLanguage(); });
+      $("#musicSelect").addEventListener("change", onMusicSelection);
+      $("#musicVolume").addEventListener("input", event => {
+      state.musicVolume = Number(event.target.value);
+      $("#musicVolumeValue").value = `${state.musicVolume}%`;
+      updateMusicGain();
+      persist();
+      });
+      $("#soundButton").addEventListener("click", () => { state.sound = !state.sound; updateLanguage(); toast(t(state.sound ? "soundOn" : "soundOff")); });
+      $("#settingsButton").addEventListener("click", renderSettings);
+      window.addEventListener("beforeunload", () => { if (state.recognition) state.recognition.stop(); });
+      function loadVoices() { state.voices = "speechSynthesis" in window ? window.speechSynthesis.getVoices() : []; }
+      loadVoices();
+      if ("speechSynthesis" in window) window.speechSynthesis.onvoiceschanged = loadVoices;
+      setCloudStatus(cloudStatusKey, cloudStatusDetail);
+      void initializeCloud().finally(() => updateLanguage());
+    }
+    $("#couponForm").addEventListener("submit", event => {
+      event.preventDefault();
+      if ($("#couponInput").value.trim() !== "Basishz2026") {
+        $("#couponError").textContent = t("couponInvalid");
+        $("#couponInput").focus();
+        return;
+      }
+      $("#couponError").textContent = "";
+      startApplication();
+    });
+  </script>
+</body>
+</html>
